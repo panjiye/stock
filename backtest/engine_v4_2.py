@@ -1,18 +1,3 @@
-# 结果出来了，这一版 v4.1 风险控制有效，而且效果比较符合预期。
-
-# 我们先和 Baseline 对比：
-
-# 指标	v3.2 原策略	v4.1 风控策略	变化
-# 最终资产	11,942,627	9,974,384	↓ 16.5%
-# 累计收益	1103.18%	899.22%	↓
-# 年化收益	12.22%	11.25%	↓ 0.97%
-# 最大回撤	-73.61%	-57.42%	✅ 降低 16.2%
-# Beta	0.98	0.77	✅ 降低风险暴露
-# 波动率	29.55%	25.11%	✅ 降低
-# Sharpe	0.43	0.46	✅ 提升
-
-
-
 import os
 import time
 import pandas as pd
@@ -22,7 +7,7 @@ from analysis.query import engine
 
 from backtest.portfolio import Portfolio
 from backtest.broker import Broker
-from backtest.risk import MarketRisk
+from backtest.risk_v2 import MarketRisk
 
 
 
@@ -34,7 +19,7 @@ INITIAL_CASH = 1000000
 
 START_DATE = "2005-01-01"
 
-RESULT_DIR = "results"
+RESULT_DIR = "results_v4_2"
 
 
 os.makedirs(

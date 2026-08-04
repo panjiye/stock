@@ -49,3 +49,4 @@ project_report/
 
 # OS
 .DS_Store
+config/
