@@ -1,8 +1,0 @@
-0|code|TEXT|0||0
-1|stat_date|TEXT|0||0
-2|quality_score|REAL|0||0
-3|valuation_score|REAL|0||0
-4|technical_score|REAL|0||0
-5|final_score|REAL|0||0
-6|update_time|TEXT|0||0
-7|pub_date|TEXT|0||0

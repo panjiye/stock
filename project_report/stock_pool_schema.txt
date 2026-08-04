@@ -1,6 +1,0 @@
-0|code|TEXT|0||0
-1|stat_date|TEXT|0||0
-2|enable|INTEGER|0||0
-3|reason|TEXT|0||0
-4|update_time|TEXT|0||0
-5|pub_date|TEXT|0||0
