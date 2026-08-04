@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.pyc
+
+# virtual env
+.venv/
+
+# database
+database/*.db
+
+# logs
+*.log
+
+# cache
+.cache/
+
+# result files
+results/
+backtest_result/
+
+# vscode
+.vscode/
+
+# OS
+.DS_Store
+# Python
+__pycache__/
+*.pyc
+
+# virtual env
+.venv/
+
+# Database
+database/*.db
+
+# Results
+results/
+backtest_result/
+
+# Generated csv
+*.csv
+*.png
+
+# Project snapshots
+project_report/
+
+# VSCode
+.vscode/
+
+# OS
+.DS_Store

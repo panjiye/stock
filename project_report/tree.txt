@@ -1,0 +1,147 @@
+.
+├── analysis
+│   ├── financial_factor.py
+│   ├── financial_normalize.py
+│   ├── financial_quality.py
+│   ├── fundamental.py
+│   ├── indicator.py
+│   ├── __init__.py
+│   ├── __pycache__
+│   │   ├── financial_factor.cpython-314.pyc
+│   │   ├── financial_normalize.cpython-314.pyc
+│   │   ├── __init__.cpython-314.pyc
+│   │   ├── query.cpython-314.pyc
+│   │   └── technical.cpython-314.pyc
+│   ├── query.py
+│   ├── stock_score.py
+│   ├── technical.py
+│   └── valuation.py
+├── annual_return.csv
+├── backtest
+│   ├── benchmark.py
+│   ├── benchmark_report.py
+│   ├── cost.py
+│   ├── equity_curve.py
+│   ├── __init__.py
+│   ├── metrics.py
+│   ├── performance.py
+│   ├── performance_summary.py
+│   ├── report.py
+│   ├── signal.py
+│   ├── signal_test.py
+│   ├── strategy_return.py
+│   └── trader.py
+├── backtest_curve.png
+├── backtest_equity_cost.csv
+├── backtest_equity.csv
+├── backtest_result
+│   ├── equity_curve.csv
+│   ├── performance.json
+│   └── trade_log.csv
+├── backtest_trades.csv
+├── benchmark.csv
+├── database
+│   └── stock.db
+├── main.py
+├── project_report
+│   └── tree.txt
+├── reports
+├── requirements.txt
+├── scripts
+│   ├── add_cost.py
+│   ├── backtest_factor.py
+│   ├── backtest_factor_v1.py
+│   ├── benchmark.py
+│   ├── build_factor_rank.py
+│   ├── build_factor_score.py
+│   ├── build_factor_score_V0.py
+│   ├── build_financial_factor.py
+│   ├── build_financial_normalized.py
+│   ├── build_financial_rank.py
+│   ├── build_indicator.py
+│   ├── build_stock_pool.py
+│   ├── build_stock_pool_v1.py
+│   ├── build_technical_factor.py
+│   ├── build_technical_quarter.py
+│   ├── build_valuation_factor.py
+│   ├── check_financial.py
+│   ├── check_financial_source.py
+│   ├── compare_strategy.py
+│   ├── create_tables.py
+│   ├── create_technical_rank_table.py
+│   ├── create_technical_table.py
+│   ├── create_valuation_table.py
+│   ├── download_all_daily.py
+│   ├── download_daily.py
+│   ├── download_daily_qfq_all.py
+│   ├── download_daily_raw_all.py
+│   ├── download_dividend_all.py
+│   ├── download_dividend_one.py
+│   ├── download_financial_all.py
+│   ├── download_financial_all_v2.py
+│   ├── download_index.py
+│   ├── download_one_stock.py
+│   ├── download_profit_all.py
+│   ├── download_stock_basic.py
+│   ├── fix_daily_price.py
+│   ├── plot_backtest.py
+│   ├── __pycache__
+│   │   ├── add_cost.cpython-314.pyc
+│   │   ├── backtest_factor.cpython-314.pyc
+│   │   ├── benchmark.cpython-314.pyc
+│   │   ├── build_factor_score.cpython-314.pyc
+│   │   ├── build_financial_factor.cpython-314.pyc
+│   │   ├── build_financial_normalized.cpython-314.pyc
+│   │   ├── build_financial_rank.cpython-314.pyc
+│   │   ├── build_stock_pool.cpython-314.pyc
+│   │   ├── build_technical_factor.cpython-314.pyc
+│   │   ├── build_technical_quarter.cpython-314.pyc
+│   │   ├── build_valuation_factor.cpython-314.pyc
+│   │   ├── build_valuation_factor.py
+│   │   ├── check_financial.cpython-314.pyc
+│   │   ├── check_financial_source.cpython-314.pyc
+│   │   ├── compare_strategy.cpython-314.pyc
+│   │   ├── create_tables.cpython-314.pyc
+│   │   ├── create_technical_rank_table.cpython-314.pyc
+│   │   ├── create_technical_table.cpython-314.pyc
+│   │   ├── create_valuation_table.cpython-314.pyc
+│   │   ├── download_financial_all.cpython-314.pyc
+│   │   ├── download_index.cpython-314.pyc
+│   │   ├── plot_backtest.cpython-314.pyc
+│   │   ├── search_eastmoney_financial_tables.cpython-314.pyc
+│   │   ├── search_eastmoney_report.cpython-314.pyc
+│   │   ├── test_eastmoney_api.cpython-314.pyc
+│   │   ├── test_eastmoney_balance.cpython-314.pyc
+│   │   ├── test_eastmoney_finance_detail.cpython-314.pyc
+│   │   └── test_eastmoney_financial.cpython-314.pyc
+│   ├── run_scan.py
+│   ├── search_eastmoney_financial_tables.py
+│   ├── search_eastmoney_report.py
+│   ├── test_dividend.py
+│   ├── test_eastmoney_api.py
+│   ├── test_eastmoney_balance.py
+│   ├── test_eastmoney_finance_detail.py
+│   ├── test_eastmoney_financial.py
+│   └── test_eastmoney_reports.py
+├── strategy
+│   ├── macd.py
+│   ├── ma_cross.py
+│   ├── market_filter.py
+│   └── scoring.py
+├── strategy_vs_benchmark.csv
+├── strategy_vs_benchmark.png
+└── tests
+    ├── __init__.py
+    ├── __pycache__
+    │   ├── __init__.cpython-314.pyc
+    │   └── t1.cpython-314.pyc
+    ├── t1.py
+    ├── test_daily.py
+    ├── test_indicator2.py
+    ├── test_indicator.py
+    ├── test_market_filter.py
+    ├── test_query.py
+    ├── test_strategy2.py
+    └── test_strategy.py
+
+13 directories, 132 files

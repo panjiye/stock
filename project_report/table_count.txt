@@ -1,0 +1,36 @@
+===== stock_basic =====
+5540
+===== financial_profit =====
+485221
+===== dividend =====
+401
+===== download_log =====
+10482
+===== daily_price_qfq =====
+16945004
+===== daily_indicator =====
+16945004
+===== daily_price_raw =====
+0
+===== daily_price_hfq =====
+0
+===== financial_profit_normalized =====
+485221
+===== financial_rank =====
+485221
+===== financial_factor =====
+485221
+===== valuation_factor =====
+485221
+===== technical_factor =====
+16942663
+===== technical_rank =====
+0
+===== technical_quarter_factor =====
+285305
+===== factor_score =====
+485221
+===== stock_pool =====
+11518
+===== index_price =====
+5240
