@@ -1,52 +1,97 @@
+# =========================
 # Python
+# =========================
+
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 
-# virtual env
+# =========================
+# Virtual environment
+# =========================
+
 .venv/
+venv/
+env/
 
-# database
+
+# =========================
+# Database
+# =========================
+
+# SQLite database (large data)
 database/*.db
+database/*.sqlite
+database/*.sqlite3
 
-# logs
+
+# =========================
+# Secrets / Config
+# =========================
+
+# Local configuration with tokens
+config/tushare_config.py
+
+# Keep example config
+!config/tushare_config.example.py
+
+
+# =========================
+# Logs / Cache
+# =========================
+
 *.log
-
-# cache
 .cache/
+.pytest_cache/
 
-# result files
-results/
-backtest_result/
 
-# vscode
+# =========================
+# VSCode
+# =========================
+
 .vscode/
 
+
+# =========================
 # OS
+# =========================
+
 .DS_Store
-# Python
-__pycache__/
-*.pyc
+Thumbs.db
 
-# virtual env
-.venv/
 
-# Database
-database/*.db
+# =========================
+# Temporary files
+# =========================
 
-# Results
-results/
-backtest_result/
+*.tar.gz
+*.zip
 
-# Generated csv
-*.csv
-*.png
-
-# Project snapshots
+debug_snapshot/
 project_report/
 
-# VSCode
-.vscode/
 
-# OS
-.DS_Store
-config/
+# =========================
+# Old backtest outputs
+# =========================
+
+# Old generic results
+results/
+backtest_result/
+
+
+# =========================
+# Keep important backtest results
+# =========================
+
+!results_v4_2/
+!results_v4_2/*.csv
+!results_v4_2/*.txt
+
+
+# =========================
+# Images
+# =========================
+
+# Ignore generated charts
+*.png
