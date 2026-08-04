@@ -95,3 +95,17 @@ backtest_result/
 
 # Ignore generated charts
 *.png
+
+
+# debug large data
+debug_export/drawdown_technical_factor.csv
+
+# local config
+config/
+
+# backtest generated files
+annual_return.csv
+backtest_equity*.csv
+backtest_trades.csv
+benchmark.csv
+strategy_vs_benchmark.csv
