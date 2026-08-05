@@ -21,7 +21,45 @@ engine = create_engine(
     f"sqlite:///{db_file}"
 )
 
+def get_index_daily(code):
+    """
+    获取指数日线数据
+    """
 
+    if "." not in code:
+        code = code + ".SH"
+
+
+    sql = text(
+        """
+        SELECT
+            date,
+            open,
+            high,
+            low,
+            close,
+            volume,
+            amount,
+            code
+        FROM index_price
+        WHERE code=:code
+        ORDER BY date
+        """
+    )
+
+
+    with engine.connect() as conn:
+
+        df = pd.read_sql(
+            sql,
+            conn,
+            params={
+                "code":code
+            }
+        )
+
+
+    return df
 
 def get_stock_daily(code):
 

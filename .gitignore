@@ -109,3 +109,21 @@ backtest_equity*.csv
 backtest_trades.csv
 benchmark.csv
 strategy_vs_benchmark.csv
+
+
+# runtime output
+results/
+results_*/
+backtest_result/
+
+# debug export
+debug_export/
+debug_snapshot/
+archive/debug/
+
+# database
+database/*.db
+
+# cache
+__pycache__/
+*.pyc

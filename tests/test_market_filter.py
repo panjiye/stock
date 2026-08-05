@@ -1,9 +1,9 @@
-from analysis.query import get_stock_daily
+from analysis.query import get_index_daily
 from analysis.indicator import add_indicator
 from strategy.market_filter import check_market
 
 
-df = get_stock_daily(
+df = get_index_daily(
     "000300"
 )
 
