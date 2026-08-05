@@ -125,15 +125,90 @@ def insert_ignore(
 
     return result.rowcount
 
+# def upsert_dataframe(
+#     df,
+#     table,
+#     unique_columns
+# ):
+#     """
+#     DataFrame 插入或更新
+
+#     sqlite INSERT OR REPLACE 替代方案
+#     """
+
+#     if df is None:
+#         return 0
+
+#     if df.empty:
+#         return 0
+
+
+#     columns = list(df.columns)
+
+
+#     placeholders = ",".join(
+#         [f":{c}" for c in columns]
+#     )
+
+
+#     column_sql = ",".join(
+#         columns
+#     )
+
+
+#     update_columns = [
+#         c for c in columns
+#         if c not in unique_columns
+#     ]
+
+
+#     update_sql = ",".join(
+#         [
+#             f"{c}=excluded.{c}"
+#             for c in update_columns
+#         ]
+#     )
+
+
+#     sql = f"""
+#     INSERT INTO {table}
+#     (
+#         {column_sql}
+#     )
+#     VALUES
+#     (
+#         {placeholders}
+#     )
+#     ON CONFLICT
+#     (
+#         {",".join(unique_columns)}
+#     )
+#     DO UPDATE SET
+#     {update_sql}
+#     """
+
+
+#     with engine.begin() as conn:
+
+#         conn.execute(
+#             text(sql),
+#             df.to_dict(
+#                 orient="records"
+#             )
+#         )
+
+
+#     return len(df)
+
 def upsert_dataframe(
     df,
     table,
     unique_columns
 ):
     """
-    DataFrame 插入或更新
+    dataframe 批量 upsert
 
-    sqlite INSERT OR REPLACE 替代方案
+    使用 sqlite ON CONFLICT
     """
 
     if df is None:
@@ -146,20 +221,15 @@ def upsert_dataframe(
     columns = list(df.columns)
 
 
-    placeholders = ",".join(
-        [f":{c}" for c in columns]
-    )
-
-
-    column_sql = ",".join(
-        columns
-    )
-
-
     update_columns = [
         c for c in columns
         if c not in unique_columns
     ]
+
+
+    placeholders = ",".join(
+        [f":{c}" for c in columns]
+    )
 
 
     update_sql = ",".join(
@@ -170,10 +240,15 @@ def upsert_dataframe(
     )
 
 
+    conflict = ",".join(
+        unique_columns
+    )
+
+
     sql = f"""
     INSERT INTO {table}
     (
-        {column_sql}
+        {",".join(columns)}
     )
     VALUES
     (
@@ -181,21 +256,24 @@ def upsert_dataframe(
     )
     ON CONFLICT
     (
-        {",".join(unique_columns)}
+        {conflict}
     )
     DO UPDATE SET
     {update_sql}
     """
 
 
+    records = df.to_dict(
+        orient="records"
+    )
+
+
     with engine.begin() as conn:
 
         conn.execute(
             text(sql),
-            df.to_dict(
-                orient="records"
-            )
+            records
         )
 
 
-    return len(df)
+    return len(records)
