@@ -43,7 +43,7 @@ DB_FILE = os.path.join(
     "database",
     "stock.db"
 )
-
+DB_PATH = DB_FILE
 
 engine = create_engine(
     f"sqlite:///{DB_FILE}"
