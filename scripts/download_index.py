@@ -1,10 +1,8 @@
-import sqlite3
 import time
 import akshare as ak
 
-
-DB_PATH = "database/stock.db"
-
+from data.writer import insert_ignore
+from data.writer import insert_dataframe
 
 INDEX_LIST = {
 
@@ -74,84 +72,34 @@ def download_index(symbol):
     ]
 
 
-
-
-
 def save_index(
     code,
     df
 ):
 
+    df = df.copy()
 
-    conn = sqlite3.connect(
-        DB_PATH
+    df["code"] = code
+
+
+    df = df[
+        [
+            "code",
+            "date",
+            "open",
+            "high",
+            "low",
+            "close",
+            "volume",
+            "amount"
+        ]
+    ]
+
+
+    return insert_ignore(
+        df,
+        "index_price"
     )
-
-
-    cur = conn.cursor()
-
-
-
-    count = 0
-
-
-
-    for _,row in df.iterrows():
-
-
-        cur.execute(
-            """
-            INSERT INTO index_price
-            (
-                code,
-                date,
-                open,
-                high,
-                low,
-                close,
-                volume,
-                amount
-            )
-            VALUES
-            (?,?,?,?,?,?,?,?)
-            """,
-
-            (
-
-                code,
-
-                row["date"],
-
-                float(row["open"]),
-
-                float(row["high"]),
-
-                float(row["low"]),
-
-                float(row["close"]),
-
-                float(row["volume"]),
-
-                float(row["amount"])
-
-            )
-        )
-
-
-        count += 1
-
-
-
-    conn.commit()
-
-    conn.close()
-
-
-    return count
-
-
-
-
 
 def main():
 
