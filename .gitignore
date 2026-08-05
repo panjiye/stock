@@ -127,3 +127,9 @@ database/*.db
 # cache
 __pycache__/
 *.pyc
+
+# database
+data/*.db
+*.db
+*.sqlite
+*.sqlite3
