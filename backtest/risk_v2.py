@@ -1,8 +1,7 @@
 import pandas as pd
-import sqlite3
+from data.query import engine
 
 
-DB_PATH = "database/stock.db"
 
 
 
@@ -34,7 +33,7 @@ class MarketRisk:
 
     def load_market(self):
 
-        conn = sqlite3.connect(
+        conn = engine.connect(
             DB_PATH
         )
 

@@ -1,9 +1,8 @@
-import sqlite3
 import os
 import pandas as pd
+from data.query import engine
 
 
-DB_PATH = "database/stock.db"
 
 OUT_DIR = "debug_snapshot"
 
@@ -22,7 +21,7 @@ def main():
 
     os.makedirs(OUT_DIR, exist_ok=True)
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = engine.connect(DB_PATH)
 
 
     print("\n========== DATABASE TABLES ==========")

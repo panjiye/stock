@@ -1,10 +1,10 @@
-import sqlite3
 import pandas as pd
 
 from backtest.risk_stock_exit import StockRiskExit
+from data.query import engine
 
 
-conn = sqlite3.connect(
+conn = engine.connect(
     "database/stock.db"
 )
 

@@ -1,11 +1,10 @@
 import os
-import sqlite3
 import pandas as pd
 import numpy as np
+from data.query import engine
 
 
 RESULT_DIR = "results_v4_2"
-DB_PATH = "database/stock.db"
 
 
 def load_equity():
@@ -87,7 +86,7 @@ def find_max_drawdown(
 
 def load_market():
 
-    conn = sqlite3.connect(
+    conn = engine.connect(
         DB_PATH
     )
 

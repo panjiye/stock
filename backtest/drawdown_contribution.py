@@ -1,9 +1,8 @@
 import os
-import sqlite3
 import pandas as pd
+from data.query import engine
 
 
-DB_PATH = "database/stock.db"
 
 TRADE_FILE = "debug_export/drawdown_trades.csv"
 PRICE_FILE = "debug_export/drawdown_price.csv"
@@ -60,7 +59,7 @@ def load_prices():
 
 def load_industry():
 
-    conn = sqlite3.connect(
+    conn = engine.connect(
         DB_PATH
     )
 

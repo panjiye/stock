@@ -1,11 +1,10 @@
 import os
 import pandas as pd
-import sqlite3
+from data.query import engine
 
 
 RESULT_DIR = "results_v4_2"
 
-DB_PATH = "database/stock.db"
 
 
 STOCK_FILE = os.path.join(
@@ -28,7 +27,7 @@ OUTPUT_TXT = os.path.join(
 
 def load_industry():
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = engine.connect(DB_PATH)
 
     df = pd.read_sql(
         """

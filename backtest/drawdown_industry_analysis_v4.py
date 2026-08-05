@@ -2,11 +2,10 @@
 
 import os
 import pandas as pd
-import sqlite3
+from data.query import engine
 
 
 RESULT_DIR = "results_v4_2"
-DB_PATH = "database/stock.db"
 
 
 # ============================================================
@@ -106,7 +105,7 @@ def get_max_drawdown_period():
 
 def load_industry():
 
-    conn = sqlite3.connect(
+    conn = engine.connect(
         DB_PATH
     )
 

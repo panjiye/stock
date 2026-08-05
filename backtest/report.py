@@ -1,6 +1,7 @@
 import pandas as pd
-import sqlite3
 import os
+
+from data.query import engine
 
 from backtest.advanced_metrics import (
     calculate_alpha_beta,
@@ -9,9 +10,6 @@ from backtest.advanced_metrics import (
     yearly_return,
     monthly_return
 )
-
-
-DB_PATH = "database/stock.db"
 
 
 EQUITY_FILE = (
@@ -27,7 +25,7 @@ def load_benchmark(
     code="000300.SH"
 ):
 
-    conn = sqlite3.connect(
+    conn = engine.connect(
         DB_PATH
     )
 

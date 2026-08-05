@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import sqlite3
 import os
+from data.query import engine
 
 
 
@@ -9,7 +9,6 @@ EQUITY_FILE = "results/equity.csv"
 
 REPORT_DIR = "results/report"
 
-DB_PATH = "database/stock.db"
 
 
 
@@ -50,7 +49,7 @@ def load_index(
 ):
 
 
-    conn = sqlite3.connect(
+    conn = engine.connect(
         DB_PATH
     )
 

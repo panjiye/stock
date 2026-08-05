@@ -13,11 +13,10 @@ export_quant_debug_v3.py
 """
 
 import os
-import sqlite3
 import pandas as pd
+from data.query import engine
 
 
-DB_PATH = "database/stock.db"
 
 RESULT_DIR = "results_v4_2"
 
@@ -396,7 +395,7 @@ def main():
     ensure_dir()
 
 
-    conn=sqlite3.connect(
+    conn=engine.connect(
         DB_PATH
     )
 
