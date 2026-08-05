@@ -25,7 +25,7 @@
 保留：
 
 
-analysis/query.py
+data/query.py
 analysis/financial_factor.py
 analysis/financial_quality.py
 analysis/valuation.py

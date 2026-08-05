@@ -273,7 +273,7 @@ archive/
 
 通过：
 
-analysis.query
+data.query
 
 访问数据库。
 

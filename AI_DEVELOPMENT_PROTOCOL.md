@@ -533,7 +533,7 @@ strategy
 
 ↓
 
-analysis.query
+data.query
 
 ↓
 

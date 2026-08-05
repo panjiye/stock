@@ -151,6 +151,6 @@ MA60
 
 数据库
 ↓
-analysis.query
+data.query
 ↓
 策略模块
