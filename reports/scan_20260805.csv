@@ -1,0 +1,2 @@
+﻿code,name,close,rsi,technical_score,fundamental_score,total_score,technical_detail,fundamental_detail,scan_date
+000020,深华发A,10.5,57.69,60,0,30.0,"{'RSI': 10, 'MA趋势': 15, 'MACD': 20, 'KDJ': 15}","{'ROE': 0, '利润率': 0, '利润规模': 0, '利润增长': 0}",2026-08-05

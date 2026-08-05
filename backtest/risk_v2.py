@@ -33,11 +33,7 @@ class MarketRisk:
 
     def load_market(self):
 
-        conn = engine.connect(
-            DB_PATH
-        )
-
-
+        conn = engine.connect()
         df = pd.read_sql(
             f"""
             select

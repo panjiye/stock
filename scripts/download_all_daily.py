@@ -2,7 +2,7 @@ import sqlite3
 import time
 import os
 
-from download_one_stock import download_stock
+from scripts.download_one_stock import download_stock
 
 
 BASE_DIR = os.path.dirname(

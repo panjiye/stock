@@ -4,9 +4,7 @@ from backtest.risk_stock_exit import StockRiskExit
 from data.query import engine
 
 
-conn = engine.connect(
-    "database/stock.db"
-)
+conn = engine.connect()
 
 
 price = pd.read_sql(

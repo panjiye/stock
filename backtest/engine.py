@@ -22,7 +22,7 @@ from data.query import engine
 
 from backtest.portfolio import Portfolio
 from backtest.broker import Broker
-from backtest.risk import MarketRisk
+from backtest.risk_v2 import MarketRisk
 
 
 

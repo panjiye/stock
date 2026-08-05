@@ -1,311 +1,318 @@
 import sqlite3
-
-
 db = "database/stock.db"
 
 
-conn = sqlite3.connect(db)
+def create_tables():
 
-cursor = conn.cursor()
+    conn = sqlite3.connect(db)
 
+    cursor = conn.cursor()
 
-# ======================
-# 原始行情
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS daily_price_raw (
+    # ======================
+    # 原始行情
+    # ======================
 
-    date TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS daily_price_raw (
 
-    open REAL,
+        date TEXT,
 
-    high REAL,
+        open REAL,
 
-    low REAL,
+        high REAL,
 
-    close REAL,
+        low REAL,
 
-    volume INTEGER,
+        close REAL,
 
-    amount REAL,
+        volume INTEGER,
 
-    code TEXT
+        amount REAL,
 
-)
-""")
+        code TEXT
 
+    )
+    """)
 
-# ======================
-# 前复权行情
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS daily_price_qfq (
+    # ======================
+    # 前复权行情
+    # ======================
 
-    date TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS daily_price_qfq (
 
-    open REAL,
+        date TEXT,
 
-    high REAL,
+        open REAL,
 
-    low REAL,
+        high REAL,
 
-    close REAL,
+        low REAL,
 
-    volume INTEGER,
+        close REAL,
 
-    amount REAL,
+        volume INTEGER,
 
-    code TEXT
+        amount REAL,
 
-)
-""")
+        code TEXT
 
+    )
+    """)
 
-# ======================
-# 后复权行情
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS daily_price_hfq (
+    # ======================
+    # 后复权行情
+    # ======================
 
-    date TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS daily_price_hfq (
 
-    open REAL,
+        date TEXT,
 
-    high REAL,
+        open REAL,
 
-    low REAL,
+        high REAL,
 
-    close REAL,
+        low REAL,
 
-    volume INTEGER,
+        close REAL,
 
-    amount REAL,
+        volume INTEGER,
 
-    code TEXT
+        amount REAL,
 
-)
-""")
+        code TEXT
 
+    )
+    """)
 
-# ======================
-# 下载日志
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS download_log (
+    # ======================
+    # 下载日志
+    # ======================
 
-    code TEXT PRIMARY KEY,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS download_log (
 
-    status TEXT,
+        code TEXT PRIMARY KEY,
 
-    message TEXT,
+        status TEXT,
 
-    update_time TEXT
+        message TEXT,
 
-)
-""")
+        update_time TEXT
 
+    )
+    """)
 
-# ======================
-# 财务利润数据
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS financial_profit (
+    # ======================
+    # 财务利润数据
+    # ======================
 
-    code TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS financial_profit (
 
-    pub_date TEXT,
+        code TEXT,
 
-    stat_date TEXT,
+        pub_date TEXT,
 
+        stat_date TEXT,
 
-    roe_avg REAL,
 
-    np_margin REAL,
+        roe_avg REAL,
 
-    gp_margin REAL,
+        np_margin REAL,
 
+        gp_margin REAL,
 
-    net_profit REAL,
 
-    eps_ttm REAL,
+        net_profit REAL,
 
-    main_business_revenue REAL,
+        eps_ttm REAL,
 
+        main_business_revenue REAL,
 
-    total_share REAL,
 
-    liqa_share REAL
+        total_share REAL,
 
-)
-""")
+        liqa_share REAL
 
+    )
+    """)
 
-# ======================
-# 财务因子
-# ======================
 
-cursor.execute("""
-CREATE TABLE financial_factor (
+    # ======================
+    # 财务因子
+    # ======================
 
-    code TEXT,
+    cursor.execute("""
+    CREATE TABLE financial_factor (
 
-    stat_date TEXT,
+        code TEXT,
 
+        stat_date TEXT,
 
-    roe_score REAL,
 
-    roe_clip REAL,
+        roe_score REAL,
 
+        roe_clip REAL,
 
-    net_margin REAL,
 
-    gross_margin REAL,
+        net_margin REAL,
 
+        gross_margin REAL,
 
-    eps REAL,
 
+        eps REAL,
 
-    profit_growth REAL,
 
-    revenue_growth REAL,
+        profit_growth REAL,
 
+        revenue_growth REAL,
 
-    growth_quality REAL,
 
+        growth_quality REAL,
 
-    stability_score REAL,
 
+        stability_score REAL,
 
-    quality_score REAL,
 
+        quality_score REAL,
 
-    update_time TEXT
 
-)""")
+        update_time TEXT
 
-cursor.execute("""
-CREATE UNIQUE INDEX idx_financial_factor_unique
-ON financial_factor(code, stat_date);
-""")
-# ======================
-# 财务因子排名
-# ======================
+    )""")
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS financial_rank (
+    cursor.execute("""
+    CREATE UNIQUE INDEX idx_financial_factor_unique
+    ON financial_factor(code, stat_date);
+    """)
+    # ======================
+    # 财务因子排名
+    # ======================
 
-    code TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS financial_rank (
 
-    stat_date TEXT,
+        code TEXT,
 
+        stat_date TEXT,
 
-    quality_score REAL,
 
-    quality_rank INTEGER,
+        quality_score REAL,
 
+        quality_rank INTEGER,
 
-    roe_rank INTEGER,
 
-    growth_rank INTEGER,
+        roe_rank INTEGER,
 
+        growth_rank INTEGER,
 
-    update_time TEXT
 
-)
-""")
+        update_time TEXT
 
+    )
+    """)
 
 
-cursor.execute("""
-CREATE UNIQUE INDEX IF NOT EXISTS idx_financial_rank_unique
-ON financial_rank(code, stat_date)
-""")
-# ======================
-# 标准化财务利润数据
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS financial_profit_normalized (
+    cursor.execute("""
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_financial_rank_unique
+    ON financial_rank(code, stat_date)
+    """)
+    # ======================
+    # 标准化财务利润数据
+    # ======================
 
-    code TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS financial_profit_normalized (
 
-    stat_date TEXT,
+        code TEXT,
 
+        stat_date TEXT,
 
-    roe REAL,
 
-    net_margin REAL,
+        roe REAL,
 
-    gross_margin REAL,
+        net_margin REAL,
 
+        gross_margin REAL,
 
-    net_profit REAL,
 
-    eps REAL,
+        net_profit REAL,
 
-    revenue REAL,
+        eps REAL,
 
+        revenue REAL,
 
-    update_time TEXT
 
-)
-""")
+        update_time TEXT
 
+    )
+    """)
 
-cursor.execute("""
-CREATE UNIQUE INDEX IF NOT EXISTS idx_financial_profit_normalized_unique
-ON financial_profit_normalized(code, stat_date)
-""")
-# ======================
-# 分红数据
-# ======================
 
-cursor.execute("""
-CREATE TABLE IF NOT EXISTS dividend (
+    cursor.execute("""
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_financial_profit_normalized_unique
+    ON financial_profit_normalized(code, stat_date)
+    """)
+    # ======================
+    # 分红数据
+    # ======================
 
-    code TEXT,
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS dividend (
 
-    regist_date TEXT,
+        code TEXT,
 
-    declare_date TEXT,
+        regist_date TEXT,
 
-    pay_date TEXT,
+        declare_date TEXT,
 
-    ex_date TEXT,
+        pay_date TEXT,
 
+        ex_date TEXT,
 
-    cash_before_tax REAL,
 
-    cash_after_tax REAL,
+        cash_before_tax REAL,
 
+        cash_after_tax REAL,
 
-    bonus_share REAL,
 
-    transfer_share REAL,
+        bonus_share REAL,
 
+        transfer_share REAL,
 
-    dividend_info TEXT
 
-)
-""")
+        dividend_info TEXT
 
+    )
+    """)
 
-cursor.execute("""
-CREATE UNIQUE INDEX IF NOT EXISTS idx_dividend_unique
 
-ON dividend(code, ex_date)
+    cursor.execute("""
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_dividend_unique
 
-""")
+    ON dividend(code, ex_date)
 
+    """)
 
-conn.commit()
 
-conn.close()
+    conn.commit()
 
+    conn.close()
 
-print("数据库表创建完成")
+
+    print("数据库表创建完成")
+
+
+
+
+
+if __name__ == "__main__":
+    create_tables()
