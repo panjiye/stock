@@ -1,59 +1,58 @@
 # 数据库说明
 
-
 数据库：
 
 database/stock.db
 
-
-数据库类型：
+类型：
 
 SQLite
 
 
+# 数据访问原则
 
-# 行情数据
+V5:
 
+写入：
 
-## daily_price_qfq
+scripts
 
-股票前复权日线。
+↓
 
+data.writer
 
-字段：
+↓
 
-date
-
-code
-
-open
-
-high
-
-low
-
-close
-
-volume
-
-amount
+SQLite
 
 
-用途：
+读取：
 
-主要回测数据。
+SQLite
+
+↓
+
+data.query
+
+
+禁止业务代码直接 sqlite3.connect。
 
 
 ---
 
-## index_price
+# 主要数据表
+
+
+## 行情
+
+daily_price_qfq
+
+前复权行情。
+
+
+index_price
 
 指数行情。
-
-
-示例：
-
-000300.SH
 
 
 用途：
@@ -61,96 +60,54 @@ amount
 市场环境过滤。
 
 
+## 股票基础
 
-# 技术数据
+stock_basic
 
-
-## daily_indicator
-
-技术指标。
+股票列表。
 
 
-包含：
-
-MA60
-
-等指标。
-
-
-用途：
-
-策略判断。
-
-
----
-
-## technical_factor
-
-技术因子。
-
-
-用途：
-
-技术评分。
-
-
----
-
-## technical_rank
-
-技术排名。
-
-
-
-# 财务数据
-
-
-## financial_profit
-
-利润数据。
-
-
-## financial_factor
-
-财务指标。
-
-
-## financial_profit_normalized
-
-标准化财务数据。
-
-
-## valuation_factor
-
-估值因子。
-
-
-
-# 综合数据
-
-
-## factor_score
-
-最终因子评分。
-
-
-## stock_pool
+stock_pool
 
 股票池。
 
 
-# 数据原则
+## 财务
+
+financial_profit
+
+利润数据。
 
 
-所有模块：
+financial_factor
 
-禁止直接读取原始文件。
+财务因子。
 
 
-统一：
+valuation_factor
 
-数据库
-↓
-data.query
-↓
-策略模块
+估值因子。
+
+
+## 综合
+
+factor_score
+
+综合评分。
+
+
+---
+
+# 当前数据库迁移状态
+
+已完成：
+
+- 指数数据写入迁移
+- 行业数据写入迁移
+- 分红数据写入迁移
+
+
+待完成：
+
+- financial_profit 写入迁移
+- daily_price_qfq 写入迁移
