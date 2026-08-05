@@ -1,113 +1,124 @@
-# 数据库说明
+# Database
+
+更新时间：2026-08-05
+
 
 数据库：
 
 database/stock.db
 
-类型：
+
+当前数据库类型：
 
 SQLite
 
 
-# 数据访问原则
+访问方式：
 
-V5:
+SQLAlchemy engine
 
-写入：
 
-scripts
+---
 
-↓
+
+# 写入规范
+
+
+从 v5 开始：
+
+
+禁止：
+
+sqlite3.connect()
+
+cursor.execute()
+
+直接 INSERT
+
+
+统一：
 
 data.writer
 
-↓
 
-SQLite
-
-
-读取：
-
-SQLite
-
-↓
-
-data.query
+---
 
 
-禁止业务代码直接 sqlite3.connect。
+# 已确认表
+
+
+## dividend
+
+
+字段：
+
+- code
+- regist_date
+- declare_date
+- pay_date
+- ex_date
+- cash_before_tax
+- cash_after_tax
+- bonus_share
+- transfer_share
+- dividend_info
+
+
+唯一索引：
+
+idx_dividend_unique
+
+(code, ex_date)
 
 
 ---
 
-# 主要数据表
+
+## download_log
 
 
-## 行情
+字段：
 
-daily_price_qfq
-
-前复权行情。
-
-
-index_price
-
-指数行情。
+- code
+- data_type
+- status
+- message
+- update_time
 
 
-用途：
+作用：
 
-市场环境过滤。
-
-
-## 股票基础
-
-stock_basic
-
-股票列表。
-
-
-stock_pool
-
-股票池。
-
-
-## 财务
-
-financial_profit
-
-利润数据。
-
-
-financial_factor
-
-财务因子。
-
-
-valuation_factor
-
-估值因子。
-
-
-## 综合
-
-factor_score
-
-综合评分。
+记录下载状态。
 
 
 ---
 
-# 当前数据库迁移状态
 
-已完成：
-
-- 指数数据写入迁移
-- 行业数据写入迁移
-- 分红数据写入迁移
+## financial_profit
 
 
-待完成：
+状态：
 
-- financial_profit 写入迁移
-- daily_price_qfq 写入迁移
+正在迁移。
+
+
+---
+
+
+# 数据写入策略
+
+
+行情类：
+
+insert_ignore
+
+
+财务类：
+
+insert_ignore
+
+
+状态日志：
+
+insert_replace
+

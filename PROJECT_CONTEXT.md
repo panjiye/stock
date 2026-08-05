@@ -1,3 +1,5 @@
+注意：archive目录中的脚本仅用于历史参考，不代表当前开发状态。当前开发状态必须以 CURRENT_STATUS.md、TODO.md 和 V5_MIGRATION_PLAN.md 为准。
+
 # A股量化研究系统项目上下文
 
 更新时间：
@@ -7,7 +9,7 @@
 
 当前版本：
 
-V5-dev
+V5开发阶段
 
 
 开发分支：
@@ -15,42 +17,42 @@ V5-dev
 v5-dev
 
 
-# 项目定位
+# 当前重点
 
-建立完整 A 股量化研究平台：
+正在进行：
 
-数据获取
-
-→ 数据库管理
-
-→ 因子计算
-
-→ 股票池
-
-→ 策略
-
-→ 回测
-
-→ 报告
+数据库访问层重构。
 
 
----
+核心目标：
 
-# 当前开发阶段
+所有数据写入统一经过：
 
-从 V4.2 Clean Baseline 迁移到 V5 架构。
+data.writer
+
+
+所有查询统一经过：
+
+data.query
 
 
 # 已完成
 
-## 数据层
+## Writer层
 
 完成：
 
-- writer统一写入设计
-- index迁移
-- industry迁移
-- dividend迁移
+- data/writer.py升级
+- DataFrame批量写入
+- upsert支持
+
+
+## 已迁移脚本
+
+- download_index.py
+- download_industry.py
+- dividend系列
+- one_stock下载
 
 
 ## 新增工具
@@ -59,230 +61,200 @@ v5-dev
 - migrate_dividend_writer_v5.py
 
 
-# 当前重点
+# 当前待处理
 
-继续消除脚本中的：
+优先：
 
-sqlite3.connect
-
-cursor.execute
-
-INSERT OR IGNORE
-
-INSERT OR REPLACE
+download_profit_all.py
 
 
-统一进入：
+然后：
 
-data.writer
+download_daily_qfq_all.py
 
-
----
-
-# 技术环境
-
-Ubuntu Desktop 26.04 LTS
-
-Python 3.14
-
-数据库：
-
-SQLite
-
-database/stock.db
+download_financial_all_v2.py
 
 
----
+# 当前开发原则
 
-# 新会话使用方式
+不要：
 
-上传：
+- 修改废弃代码
+- 破坏V4.2稳定版本
+- 为清理而改变架构
 
-PROJECT_CONTEXT.md
 
-并说明：
+应该：
 
-"这是我的A股量化项目，请根据当前V5状态继续开发，不改变整体架构。"
-# PROJECT_CONTEXT.md
+- 小步迁移
+- 每次迁移可运行验证
+- 保持V5架构一致
 
-# A股量化选股系统项目上下文
+# Project Context
 
 更新时间：
 
 2026-08-05
 
-# 项目目标
 
-开发一个个人使用的 A 股量化选股与回测系统。
+项目：
 
-目标：
+A股量化分析系统
 
-* 自动获取 A 股历史数据
-* 建立统一数据库
-* 构建基本面 + 技术面因子
-* 进行股票筛选
-* 进行策略回测
-* 分析收益、风险、回撤
-* 逐步发展为 V5 架构
 
-# 当前版本
-
-当前基线：
-
-V4.2 Clean
-
-Git:
-
-已建立：
-
-v4.2-clean
-
-当前开发分支：
+分支：
 
 v5-dev
 
-# 当前状态
 
-## 已完成
-
-### 数据层
-
-SQLite 数据库：
-
-database/stock.db
-
-已有主要表：
-
-* daily_price_qfq
-* daily_price_hfq
-* daily_price_raw
-* index_price
-* daily_indicator
-* technical_factor
-* valuation_factor
-* financial_factor
-* financial_profit
-* stock_basic
-* stock_pool
-
-### 行情来源
-
-主要日线行情：
-
-baostock
-
-原因：
-
-* 免费
-* 稳定
-* 历史数据完整
-
-其他数据：
-
-可能结合：
-
-* AkShare
-* Tushare
-* 网络爬取
-
-原则：
-
-行情数据统一进入 SQLite。
-
-不同来源数据需要标准化。
-
-# 当前代码结构
-
-```
-analysis/
-
-数据查询
-指标计算
+---
 
 
-strategy/
-
-策略逻辑
+# 当前阶段
 
 
-backtest/
-
-回测
+数据库访问层重构阶段。
 
 
-database/
+目标：
+
+统一所有数据入口。
+
+
+---
+
+
+# 当前完成
+
+
+完成：
+
+## Writer Layer
+
+状态：
+
+完成。
+
+
+## 指数下载
+
+完成。
+
+
+## 行业分类下载
+
+完成。
+
+
+## 分红数据下载
+
+完成。
+
+
+---
+
+
+# 当前代码状态
+
+
+稳定：
+
+- data/writer.py
+- download_index.py
+- download_industry.py
+- dividend v5 系列
+
+
+测试：
+
+通过。
+
+
+---
+
+
+# 未完成
+
+
+## 财务数据迁移
+
+
+涉及：
+
+download_profit_all.py
+
+
+download_financial_all_v2.py
+
+
+
+## 日线数据迁移
+
+
+涉及：
+
+download_daily_qfq_all.py
+
+
+
+---
+
+
+# 开发原则
+
+
+以后新增：
+
+数据获取
+
+↓
+
+标准化 DataFrame
+
+↓
+
+Writer
+
+↓
 
 数据库
 
 
-archive/
 
-历史废弃代码
-```
+禁止：
 
-# 已完成整理
+脚本直接连接数据库。
 
-完成：
 
-* 清理旧回测文件
-* 将废弃代码移动 archive
-* 保留 V4.2 基线
-* 建立 V5 开发分支
+---
 
-# 当前注意事项
 
-不要：
+# 最近 Git
 
-修改 archive
 
-不要：
+重要提交：
 
-继续优化旧 risk_stock_exit_v2
+5c68e57
 
-原因：
+migrate download_index to writer layer
 
-速度慢，设计方向需要废弃。
 
-# 当前问题
+691bdb2
 
-pytest 已清理。
+migrate download_industry to writer upsert layer
 
-当前没有有效测试。
 
-后续需要重新建立：
+3b1e210
 
-针对核心模块的小测试。
+add dataframe upsert writer
 
-# V5方向
 
-核心：
+268df88
 
-重新设计更清晰的数据流。
+migrate dividend downloader to writer layer
 
-重点：
 
-1. 数据标准化
+9427bd0
 
-2. 因子体系
+add writer migration tools
 
-3. 股票池
-
-4. 评分模型
-
-5. 策略
-
-6. 风控
-
-# AI 工作原则
-
-任何开发：
-
-先阅读：
-
-PROJECT_CONTEXT.md
-
-ARCHITECTURE.md
-
-TODO.md
-
-不要重新设计项目。

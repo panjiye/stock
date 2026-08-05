@@ -1,144 +1,167 @@
-# 系统架构
+# Architecture
 
-更新时间：
-
-2026-08-05
+更新时间：2026-08-05
 
 
 # V5 架构目标
 
-数据获取
+建立统一的数据采集、存储、分析架构。
 
-↓
 
-Downloader
+核心原则：
 
-↓
-
-data.writer
-
-↓
-
-SQLite数据库
-
-↓
-
-data.query
-
-↓
-
-Analysis
-
-↓
-
-Factor
-
-↓
-
-Strategy
-
-↓
-
-Backtest
-
-↓
-
-Report
+所有数据写入必须经过 Writer Layer。
 
 
 ---
 
-# 当前架构变化
 
-V5 开始统一数据访问层。
+# 当前架构
 
 
-## 写入层
+## 数据来源层
 
-新增：
 
-data.writer
+来源：
+
+- AkShare
+- Tushare
+- BaoStock
 
 
 负责：
 
-- dataframe写入
-- insert ignore
-- replace/upsert
-
-
-原则：
-
-业务脚本禁止直接 sqlite 写入。
-
-
-## 查询层
-
-data.query
-
-负责：
-
-数据库读取。
+获取原始数据。
 
 
 ---
 
-# 模块说明
 
-## scripts
+## 数据处理层
+
 
 负责：
 
-数据获取和转换。
-
-
-不负责：
-
-数据库细节。
-
-
-## data
-
-负责：
-
-数据库访问。
-
-
-包括：
-
-query.py
-
-writer.py
-
-
-## analysis
-
-数据分析。
-
-
-## factor
-
-因子计算。
-
-
-## strategy
-
-策略逻辑。
-
-
-## backtest
-
-历史验证。
+- 数据清洗
+- 类型转换
+- 字段标准化
 
 
 ---
 
-# 设计原则
 
-低耦合。
+## Writer Layer（新增核心）
 
-数据层和策略层分离。
 
-所有策略必须历史验证。
+位置：
 
-所有数据写入统一入口。
+data/writer.py
+
+
+职责：
+
+统一数据库写入。
+
+
+提供：
+
+- insert_dataframe
+
+批量 DataFrame 写入
+
+
+- insert_ignore
+
+替代：
+
+INSERT OR IGNORE
+
+
+- insert_replace
+
+替代：
+
+INSERT OR REPLACE
+
+
+- execute_sql
+
+执行复杂 SQL
+
+
+---
+
+
+# 重构前
+
+
+脚本：
+
+download_xxx.py
+
+
+直接：
+
+sqlite3.connect
+
+cursor.execute
+
+commit
+
+
+问题：
+
+- 重复代码大量存在
+- 数据库逻辑分散
+- 难维护
+
+
+---
+
+
+# 重构后
+
+
+脚本：
+
+download_xxx_v5.py
+
+
+流程：
+
+
+数据源
+
+↓
+
+DataFrame
+
+↓
+
+Writer
+
+↓
+
+Database
+
+
+
+---
+
+
+# 当前影响
+
+
+已完成迁移：
+
+- index
+- industry
+- dividend
+
+
+待迁移：
+
+- profit
+- daily
+- financial
+

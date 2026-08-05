@@ -1,0 +1,227 @@
+.
+├── 开发日志.md
+├── AI_CONTEXT.md
+├── AI_DEVELOPMENT_PROTOCOL.md
+├── analysis
+│   ├── financial_factor.py
+│   ├── financial_normalize.py
+│   ├── financial_quality.py
+│   ├── fundamental.py
+│   ├── indicator.py
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── stock_score.py
+│   ├── technical.py
+│   └── valuation.py
+├── annual_return.csv
+├── ARCHITECTURE.md
+├── archive
+│   ├── backtest
+│   ├── scripts
+│   ├── strategy
+│   └── tests
+├── backtest
+│   ├── advanced_metrics.py
+│   ├── backtest
+│   ├── benchmark.py
+│   ├── benchmark_report.py
+│   ├── benchmark_v2.py
+│   ├── broker.py
+│   ├── cost.py
+│   ├── drawdown_analysis.py
+│   ├── drawdown_analysis_v2.py
+│   ├── drawdown_contribution.py
+│   ├── drawdown_contribution_v2.py
+│   ├── drawdown_industry_analysis.py
+│   ├── drawdown_industry_analysis_v4.py
+│   ├── drawdown_technical_analysis.py
+│   ├── engine.py
+│   ├── engine_v4_2.py
+│   ├── equity_curve.py
+│   ├── __init__.py
+│   ├── metrics.py
+│   ├── performance.py
+│   ├── performance_summary.py
+│   ├── portfolio.py
+│   ├── __pycache__
+│   ├── report_chart.py
+│   ├── report_detail.py
+│   ├── report.py
+│   ├── report_v4_2.py
+│   ├── risk_overlay_simulation.py
+│   ├── risk_overlay_test.py
+│   ├── risk_stock_exit.py
+│   ├── risk_v2.py
+│   ├── signal.py
+│   ├── signal_test.py
+│   ├── strategy_return.py
+│   ├── test_risk_stock_exit.py
+│   └── trader.py
+├── backtest_curve.png
+├── backtest_equity_cost.csv
+├── backtest_equity.csv
+├── backtest_result
+│   ├── equity_curve.csv
+│   ├── performance.json
+│   └── trade_log.csv
+├── backtest_trades.csv
+├── benchmark.csv
+├── CHANGELOG.md
+├── chatGPT对话要素.md
+├── config
+│   ├── __init__.py
+│   ├── __pycache__
+│   └── tushare_config.py
+├── data
+│   ├── *.db
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── query.py
+│   ├── stock.db
+│   └── writer.py
+├── database
+│   └── stock.db
+├── DATABASE.md
+├── db_path_scan.log
+├── db_write_scan.log
+├── DEVELOPMENT_LOG.md
+├── DEVELOPMENT_PLAN.md
+├── FILE_CLEANUP_PLAN.md
+├── import_check.log
+├── main.py
+├── migrate_v4_2_to_v5_archive.sh
+├── migration_v4_2_archive.log
+├── PROJECT_CONTEXT.md
+├── PROJECT_TREE.txt
+├── __pycache__
+│   └── main.cpython-314.pyc
+├── pytest.ini
+├── python_files.txt
+├── reports
+│   ├── dividend_writer_migration.md
+│   ├── scan_20260805.csv
+│   └── writer_migration_report.md
+├── requirements.txt
+├── results
+│   ├── backtest_summary.txt
+│   ├── baseline
+│   ├── equity.csv
+│   ├── equity_v2.csv
+│   ├── excess_return.csv
+│   ├── monthly_return.csv
+│   ├── report
+│   ├── report.txt
+│   ├── trades.csv
+│   ├── trades_v2.csv
+│   └── yearly_return.csv
+├── results_risk_overlay
+│   ├── equity_overlay.csv
+│   └── overlay_equity.csv
+├── results_v4_2
+│   ├── backtest_summary.txt
+│   ├── drawdown_analysis.txt
+│   ├── drawdown_analysis_v2.txt
+│   ├── drawdown_contribution.csv
+│   ├── drawdown_contribution.txt
+│   ├── drawdown_contribution_v2.txt
+│   ├── drawdown_industry_contribution.csv
+│   ├── drawdown_industry.csv
+│   ├── drawdown_industry.txt
+│   ├── drawdown_stock_contribution.csv
+│   ├── drawdown_stocks.csv
+│   ├── drawdown_technical_analysis.csv
+│   ├── drawdown_technical_analysis.txt
+│   ├── equity.csv
+│   ├── excess_return.csv
+│   ├── monthly_return.csv
+│   ├── trades.csv
+│   └── yearly_return.csv
+├── scripts
+│   ├── add_cost.py
+│   ├── backtest_factor.py
+│   ├── backtest_factor_v1.py
+│   ├── benchmark.py
+│   ├── build_factor_rank.py
+│   ├── build_factor_score.py
+│   ├── build_factor_score_V0.py
+│   ├── build_financial_factor.py
+│   ├── build_financial_normalized.py
+│   ├── build_financial_rank.py
+│   ├── build_indicator.py
+│   ├── build_stock_pool.py
+│   ├── build_stock_pool_v2.py
+│   ├── build_technical_factor.py
+│   ├── build_technical_quarter.py
+│   ├── build_valuation_factor.py
+│   ├── check_financial.py
+│   ├── check_financial_source.py
+│   ├── check_imports_v5.py
+│   ├── compare_strategy.py
+│   ├── create_industry_table.py
+│   ├── create_tables.py
+│   ├── create_technical_rank_table.py
+│   ├── create_technical_table.py
+│   ├── create_valuation_table.py
+│   ├── debug_eastmoney_financial.py
+│   ├── download_all_daily.py
+│   ├── download_daily_qfq_all.py
+│   ├── download_daily_qfq_all_v5.py
+│   ├── download_dividend_all.py
+│   ├── download_dividend_all_v5.py
+│   ├── download_dividend_one.py
+│   ├── download_dividend_one_v5.py
+│   ├── download_financial_all_v2.py
+│   ├── download_financial_all_v5.py
+│   ├── download_index.py
+│   ├── download_industry.py
+│   ├── download_industry_v3.py
+│   ├── download_one_stock.py
+│   ├── download_one_stock_v5.py
+│   ├── download_profit_all.py
+│   ├── download_stock_basic.py
+│   ├── fix_daily_price.py
+│   ├── migrate_dividend_writer_v5.py
+│   ├── migrate_import_v5.py
+│   ├── migrate_query_import.py
+│   ├── migrate_sqlite_to_engine_v5.py
+│   ├── migrate_writer_v5.py
+│   ├── plot_backtest.py
+│   ├── __pycache__
+│   ├── run_scan.py
+│   ├── search_eastmoney_financial_tables.py
+│   ├── search_eastmoney_report.py
+│   ├── test_dividend.py
+│   ├── test_eastmoney_api.py
+│   ├── test_eastmoney_balance.py
+│   ├── test_eastmoney_finance_detail.py
+│   ├── test_eastmoney_reports.py
+│   └── update_docs_v5.py
+├── select
+├── stock_md_docs.tar.gz
+├── strategy
+│   ├── macd.py
+│   ├── ma_cross.py
+│   ├── market_filter.py
+│   ├── __pycache__
+│   └── scoring.py
+├── strategy_vs_benchmark.csv
+├── strategy_vs_benchmark.png
+├── tests
+│   ├── __init__.py
+│   ├── __pycache__
+│   ├── test_daily.py
+│   ├── test_data_query.py
+│   ├── test_indicator2.py
+│   ├── test_indicator.py
+│   ├── test_market_filter.py
+│   ├── test_query.py
+│   ├── test_strategy2.py
+│   └── test_strategy.py
+├── TODO.md
+├── tools
+│   ├── export_drawdown_debug.py
+│   ├── export_quant_debug.py
+│   └── __pycache__
+└── V5_MIGRATION_PLAN.md
+
+32 directories, 193 files
