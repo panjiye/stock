@@ -1,42 +1,37 @@
 # TODO
 
-版本：V5-dev
-
 ## 已完成
 
-- [x] Factor Layer建设
-- [x] Strategy Layer基础结构
-- [x] Strategy Layer接入backtest_factor.py
+* [x] Factor Layer 建设
+* [x] factor_score 数据接入
+* [x] Strategy Pipeline 建设
+* [x] Strategy 与 Backtest 桥接
+* [x] V5 多因子回测流程验证
 
-## 当前进行中
-
-- [ ] 完成第一次完整V5回测
-- [ ] 检查收益曲线与风险指标
-- [ ] 验证交易记录
-
-## 后续
-
-- 因子优化
-- 策略优化
-- 风控优化
-
-# 已完成
-
-- [x] Factor Layer
-- [x] Strategy Layer
-- [x] Strategy Backtest Bridge
-- [x] V5 Baseline Backtest
-
+---
 
 # 当前任务
 
-- [ ] 优化 Risk Layer
-- [ ] 降低最大回撤
-- [ ] 增加 Benchmark 对比
-- [ ] 分析回撤贡献
+## Risk Layer
 
+* [ ] 标准化回测结果输出
+* [ ] 最大回撤周期分析
+* [ ] 回撤贡献分析
+* [ ] 行业贡献分析
+* [ ] Benchmark 对比分析
 
-# 后续
+---
 
-- [ ] 因子权重优化
-- [ ] 实盘扫描流程
+# 后续规划
+
+## Portfolio Layer
+
+* [ ] 仓位优化
+* [ ] 风险预算
+* [ ] 多策略组合
+
+## Live Trading Preparation
+
+* [ ] 实盘信号输出
+* [ ] 交易接口设计
+* [ ] 实时风险控制

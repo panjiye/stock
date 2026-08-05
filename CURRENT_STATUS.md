@@ -1,46 +1,94 @@
-# Current Status
+# 当前项目状态
 
-版本：V5-dev
-日期：2026-08-05
+## V5 当前完成状态
 
-## 当前完成
+更新时间：
 
-- 数据层完成
-- Factor Layer完成
-- Strategy Layer基础完成
-- Strategy Layer 已接入 factor backtest
+2026-08
 
-## 当前主路线
+---
 
-factor_score
-↓
-strategy_pipeline
-↓
-scripts/backtest_factor.py
-↓
-portfolio
-↓
-performance
+## 已完成
 
-## 下一步
-
-完成V5 Pipeline Validation，运行第一次完整回测。
-
-
-## V5 Baseline Backtest Completed
+### Factor Layer
 
 状态：
 
-已完成第一次完整回测闭环。
+✅ 完成
 
-结果：
+包括：
 
-- 初始资金: 1,000,000
-- 最终资产: 15,389,833.64
-- 年化收益: 14.07%
-- 最大回撤: -49.45%
-- Sharpe: 0.7066
+* factor_score 数据
+* 综合评分输出
+* 因子排序
 
-当前阶段：
+---
 
-进入 Risk Layer Enhancement。
+### Strategy Layer
+
+状态：
+
+✅ 完成
+
+入口：
+
+```
+strategy/strategy_pipeline.py
+```
+
+功能：
+
+* 因子结果接入
+* 市场过滤
+* MA/MACD 技术组合
+* 输出标准交易信号
+
+---
+
+### Backtest Integration
+
+状态：
+
+✅ 完成
+
+包括：
+
+* strategy signal adapter
+* factor backtest bridge
+
+验证：
+
+```bash
+python -c "from strategy.strategy_pipeline import select_strategy_stocks"
+```
+
+通过。
+
+---
+
+## 当前进行中
+
+### Risk Layer
+
+目标：
+
+* 回撤分析
+* 回撤贡献分析
+* 行业归因
+* 风险暴露分析
+
+---
+
+## 下一阶段
+
+建立：
+
+```
+Risk Layer
+    |
+    |
+Performance Attribution
+    |
+    |
+Portfolio Optimization
+```
