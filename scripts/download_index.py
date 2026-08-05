@@ -2,7 +2,6 @@ import time
 import akshare as ak
 
 from data.writer import insert_ignore
-from data.writer import insert_dataframe
 
 INDEX_LIST = {
 
