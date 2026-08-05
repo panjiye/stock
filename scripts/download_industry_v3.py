@@ -14,8 +14,8 @@ import sqlite3
 
 import akshare as ak
 
-from data.query import DB_PATH
-
+#from data.query import DB_PATH
+from data.query import DB_FILE
 
 
 def download_industry():
@@ -37,7 +37,7 @@ def download_industry():
 
 
     conn = sqlite3.connect(
-        DB_PATH
+        DB_FILE
     )
 
     cur = conn.cursor()
