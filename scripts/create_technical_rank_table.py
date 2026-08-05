@@ -1,6 +1,6 @@
 from sqlalchemy import text
 
-from analysis.query import engine
+from data.query import engine
 
 
 

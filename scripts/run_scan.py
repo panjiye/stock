@@ -14,8 +14,8 @@ sys.path.append(BASE_DIR)
 
 from analysis.indicator import add_indicator
 
-from analysis.query import get_stock_list
-from analysis.query import get_stock_daily
+from data.query import get_stock_list
+from data.query import get_stock_daily
 
 from strategy.ma_cross import check_ma_cross
 from strategy.macd import check_macd

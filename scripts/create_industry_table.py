@@ -13,7 +13,7 @@ stock_industry
 
 from sqlalchemy import text
 
-from analysis.query import engine
+from data.query import engine
 
 
 def create_table():

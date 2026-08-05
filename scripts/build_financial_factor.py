@@ -2,7 +2,7 @@ import pandas as pd
 
 from sqlalchemy import text
 
-from analysis.query import engine
+from data.query import engine
 
 from analysis.financial_factor import (
     calculate_financial_factor

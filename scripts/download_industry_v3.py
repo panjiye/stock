@@ -14,7 +14,7 @@ import sqlite3
 
 import akshare as ak
 
-from analysis.query import DB_PATH
+from data.query import DB_PATH
 
 
 

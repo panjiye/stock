@@ -1,7 +1,7 @@
 import pandas as pd
 from sqlalchemy import text
 
-from analysis.query import (
+from data.query import (
     engine,
     get_stock_list,
     get_stock_daily
