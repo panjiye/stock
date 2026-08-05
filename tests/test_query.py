@@ -1,4 +1,4 @@
-from analysis.query import (
+from data.query import (
     get_stock_daily,
     get_stock_list,
     get_latest_price

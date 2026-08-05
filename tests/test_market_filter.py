@@ -1,4 +1,4 @@
-from analysis.query import get_index_daily
+from data.query import get_index_daily
 from analysis.indicator import add_indicator
 from strategy.market_filter import check_market
 

@@ -1,4 +1,4 @@
-from analysis.query import get_stock_daily
+from data.query import get_stock_daily
 from analysis.indicator import add_ma
 
 
