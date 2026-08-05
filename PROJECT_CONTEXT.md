@@ -1,269 +1,369 @@
-# Stock Quant Project Context
+# A股量化研究系统项目上下文
 
-## 项目名称
+更新时间：
+2026-08-05
 
-A股多因子量化研究系统
+当前版本：
+V4.2 Clean Baseline
 
-
----
-
-# 当前版本
-
-Version:
-
-v4.2 Research Prototype
+开发分支：
+v5-dev
 
 
-状态:
+# 1. 项目定位
 
-冻结准备重构
+这是一个个人 A 股量化研究系统。
+
+目标不是开发单一策略，而是建立完整量化研究平台：
+
+数据获取
+→ 数据清洗
+→ 数据库管理
+→ 因子计算
+→ 股票池生成
+→ 评分选股
+→ 策略交易
+→ 回测验证
+→ 风险控制
+→ 绩效分析
 
 
----
+长期目标：
 
-# 项目定位
+建立类似小型量化研究框架。
 
-本项目是一个：
 
-A股多因子选股 + 回测验证系统
+# 2. 当前阶段
+
+当前已经完成：
+
+V4.2 策略验证阶段。
+
+当前重点：
+
+从 V4.2 迁移到 V5 架构。
+
+
+V4.2 已经完成：
+
+- 股票行情数据库
+- 财务数据整理
+- 技术指标计算
+- 因子评分
+- 股票池
+- 回测框架
+- 收益分析
+
+
+# 3. 技术环境
+
+操作系统：
+
+Ubuntu Desktop 26.04 LTS
+
+
+Python:
+
+Python 3.14.4
+
+
+虚拟环境：
+
+.venv
+
+
+主要依赖：
+
+- pandas
+- numpy
+- sqlalchemy
+- akshare
+- baostock
+- tushare
+- requests
+
+
+数据库：
+
+SQLite
+
+位置：
+
+database/stock.db
+
+
+# 4. 数据来源设计
+
+
+## 行情数据
+
+主要来源：
+
+baostock
+
+
+原因：
+
+- 免费
+- 稳定
+- 历史数据完整
+- 适合批量下载
+
+
+主要表：
+
+daily_price_qfq
+
+
+用途：
+
+股票日线回测。
+
+
+## 财务数据
+
+采用混合方式：
+
+- 东方财富接口/爬虫
+- Tushare
+- AkShare
+
+
+原因：
+
+不同来源字段优势不同。
 
 
 目标：
 
-通过：
+统一进入：
 
-- 行情数据
-- 财务数据
-- 技术指标
-- 估值指标
-- 因子评分
+financial_profit
 
-构建股票选择模型，并通过历史数据回测验证。
+financial_factor
 
+valuation_factor
 
----
 
-# 当前项目阶段
+# 5. 当前数据库
 
-## 已完成
 
-### 数据层
+主要表：
 
-完成：
+## 行情
 
-- 股票基础信息
-- 行情数据
-- 财务数据获取
-- 财务数据标准化
+daily_price_qfq
 
+复权日线行情
 
-### 因子层
 
-已有：
+daily_price_hfq
 
-- 财务因子
-- 质量因子
-- 估值因子
-- 技术因子
-- 综合评分
+后复权行情
 
 
-### 回测层
+daily_price_raw
 
-已有：
+原始行情
 
-- 股票交易模拟
-- 组合管理
-- 交易成本
-- 风险控制
-- 回测报告
 
+index_price
 
----
+指数行情
 
-# 当前主要问题
 
-## 1. 缺少统一运行入口
+## 股票基础
 
-目前：
+stock_basic
 
-多个 scripts 和测试文件可以运行。
+股票列表
 
-没有：
 
-统一 pipeline。
-
-
----
-
-## 2. 文件版本混乱
-
-历史开发过程中：
-
-存在：
-
-engine.py
-
-engine_v2.py
-
-engine_v3.py
-
-engine_v4_2.py
-
-
-实际版本不能依靠文件名判断。
-
-
----
-
-## 3. 研究代码和生产代码混合
-
-当前：
-
-scripts/
-
-tests/
-
-backtest/
-
-存在大量历史实验文件。
-
-
----
-
-# 当前真实核心模块
-
-
-## 数据
-
-scripts:
-
-- download_daily_qfq_all.py
-- download_financial_all_v2.py
-
-
-## 因子
-
-analysis:
-
-- financial_factor.py
-- financial_quality.py
-- valuation.py
-- technical.py
-- stock_score.py
-
-
-## 策略
-
-strategy:
-
-- scoring.py
-- market_filter.py
-
-
-## 回测
-
-backtest:
-
-- engine_v4_2.py
-- portfolio.py
-- trader.py
-- broker.py
-- risk_v2.py
-- report_v4_2.py
-
-
----
-
-# 当前真实运行链路
-
-
-数据
-
-↓
-
-数据库
-
-↓
-
-因子计算
-
-↓
+stock_pool
 
 股票池
 
-↓
 
-策略
+## 技术因子
 
-↓
+technical_factor
 
-回测
-
-↓
-
-报告
+技术指标
 
 
----
+technical_rank
 
-# v5.0目标
-
-
-不是增加更多策略。
+技术排名
 
 
-目标：
+## 财务
 
-工程化。
+financial_profit
 
-
-实现：
-
-- 一个数据入口
-- 一个因子入口
-- 一个回测入口
-- 一个报告入口
+财报数据
 
 
----
+financial_factor
 
-# 开发原则
-
-
-以后：
-
-禁止：
-
-engine_v5.py
-
-strategy_new.py
+财务因子
 
 
-版本由：
+financial_profit_normalized
 
-Git Tag
-
-管理。
+标准化财务数据
 
 
-代码文件保持稳定。
+## 综合评分
+
+factor_score
 
 
----
-
-# 新会话启动说明
+# 6. 当前代码结构
 
 
-打开新的 ChatGPT 会话时：
+stock/
+
+analysis/
+
+    query.py
+
+数据库查询接口
+
+
+strategy/
+
+    market_filter.py
+
+市场环境判断
+
+
+    scoring.py
+
+评分策略
+
+
+    macd.py
+
+    ma_cross.py
+
+
+backtest/
+
+    risk_stock_exit.py
+
+
+scripts/
+
+数据处理脚本
+
+
+archive/
+
+历史废弃代码
+
+
+# 7. 当前已经完成的重要设计
+
+
+## 数据访问统一
+
+原则：
+
+业务代码不能直接操作 sqlite。
+
+通过：
+
+analysis.query
+
+访问数据库。
+
+
+## 市场过滤
+
+当前：
+
+沪深300
+
+条件：
+
+close > MA60
+
+
+作用：
+
+判断市场环境。
+
+避免熊市强行交易。
+
+
+## Git版本管理
+
+
+main:
+
+V4.2稳定版本
+
+
+v5-dev:
+
+V5开发版本
+
+
+tag:
+
+v4.2-clean
+
+
+# 8. 已废弃内容
+
+
+以下不要继续维护：
+
+
+risk_stock_exit_v2.py
+
+
+原因：
+
+- 速度慢
+- csv驱动
+- 架构不符合V5
+
+
+archive目录：
+
+仅保存历史参考。
+
+
+# 9. 当前开发原则
+
+
+不要：
+
+- 为测试而修改架构
+- 为GitHub清理改变项目设计
+- 继续修复废弃代码
+
+
+应该：
+
+- 保持模块化
+- 数据统一
+- 增量开发
+- 每个模块可独立验证
+
+
+# 10. 新会话使用方式
+
+
+开始新ChatGPT会话：
 
 上传：
 
-- PROJECT_CONTEXT.md
-- ARCHITECTURE.md
-- TODO.md
+PROJECT_CONTEXT.md
 
 
-并说明：
+并输入：
 
-“基于当前 v4.2 状态继续 v5.0 重构，不重新设计架构。”
+"这是我的A股量化项目，请阅读 PROJECT_CONTEXT.md，根据当前状态继续开发，不要改变整体架构。"
+

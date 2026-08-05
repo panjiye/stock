@@ -1,21 +1,26 @@
-# A-stock Quant Architecture
+# 系统架构
 
 
-## 当前架构
+## 总体流程
 
 
-目前：
-
-
-Data
+数据源
 
 ↓
 
-Scripts
+Downloader
+
+↓
+
+SQLite数据库
 
 ↓
 
 Analysis
+
+↓
+
+Factor
 
 ↓
 
@@ -27,153 +32,82 @@ Backtest
 
 ↓
 
-Results
+Report
 
 
-
-
-存在问题：
-
-数据、因子、策略耦合。
-
-
----
-
-# v5目标架构
-
-
-
-             main.py
-
-                |
-
-          Research Pipeline
-
-
-                |
-
-    |    |   |   |
-
-        Data Factor Portfolio Risk
-
-    |    |   |   |
-
-        SQLite Matrix Holdings Metrics
-
-                |
-
-          Backtest Engine
-
-
-                |
-
-          Report Engine
-
-
----
 
 # 模块说明
 
 
-## Data
-
-
-负责：
-
-- 行情
-- 财务
-- 基础信息
-
-
-禁止：
-
-策略读取原始接口。
-
-
-
----
-
-## Factor
-
+## downloader
 
 负责：
+
+- baostock行情下载
+- 财务数据获取
+
+
+## database
+
+存储：
+
+统一数据。
+
+
+
+## analysis
+
+数据查询和基础计算。
+
+
+## factor
+
+因子计算。
+
+
+未来建立。
+
+
+## strategy
+
+策略逻辑。
+
+
+包括：
+
+- 市场过滤
+- 评分
+- 买卖规则
+
+
+## backtest
+
+历史模拟。
+
+
+包括：
+
+- 回测引擎
+- 风控
+- 收益分析
+
+
+## report
 
 生成：
 
-stock-factor-date
-
-
-例如：
-
-
-000001
-
-2025-01-01
-
-ROE
-
-PE
-
-Momentum
+- 收益曲线
+- 回撤
+- 分析报告
 
 
 
-
----
-
-## Strategy
+# 设计原则
 
 
-负责：
+低耦合。
 
-根据因子生成：
+数据层和策略层分离。
 
-买入卖出信号。
+所有策略必须可以历史验证。
 
-
-
----
-
-## Portfolio
-
-
-负责：
-
-仓位：
-
-- 股票数量
-- 权重
-- 调仓
-
-
-
----
-
-## Backtest
-
-
-负责：
-
-模拟真实交易。
-
-
-必须支持：
-
-- 手续费
-- 滑点
-- 涨跌停
-- 停牌
-
-
-
----
-
-## Risk
-
-
-负责：
-
-- 最大回撤
-- 波动率
-- beta
-- 行业暴露
