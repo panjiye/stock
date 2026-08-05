@@ -1,26 +1,10 @@
-import sqlite3
 import pandas as pd
-import os
 
-
-BASE_DIR = os.path.dirname(
-    os.path.dirname(
-        os.path.abspath(__file__)
-    )
-)
-
-
-DB_PATH = os.path.join(
-    BASE_DIR,
-    "database",
-    "stock.db"
-)
-
+from data.query import engine
 
 
 def get_connection():
-
-    return sqlite3.connect(DB_PATH)
+    return engine.connect()
 
 def check_financial_quality(code):
 
