@@ -1,66 +1,49 @@
-# Backtest Integration 状态
-
-更新时间：2026-08-05
+# Backtest Integration Status
 
 版本：V5-dev
-
----
+日期：2026-08-05
 
 ## 当前阶段
 
-Backtest Integration
+V5 Strategy Layer 与 Factor Backtest 接入。
 
-目标：
+## 当前真实链路
 
-将 V5 Factor Layer 与 Strategy Layer 接入现有 V4.2 回测框架。
+factor_score
 
----
+↓
 
-## 当前架构
+strategy_pipeline
 
-```text
-Factor Pipeline
-        ↓
-Strategy Pipeline
-        ↓
-V5 Strategy Adapter
-        ↓
-Backtest Engine V4.2
-        ↓
-Portfolio / Broker
-```
+↓
 
----
+scripts/backtest_factor.py
+
+↓
+
+portfolio
+
+↓
+
+performance report
+
+## 架构原则
+
+保持稳定：
+
+- backtest/engine_v4_2.py
+- portfolio
+- broker
+- risk
+
+不进行核心回测重构。
 
 ## 已完成
 
-新增：
+- Factor Layer
+- Strategy Pipeline 基础结构
+- Backtest Adapter 基础结构
 
-`backtest/v5_strategy_adapter.py`
+## 当前任务
 
-职责：
-
-- 转换 Strategy Layer 输出
-- 保持 engine_v4_2 不修改
-- 保持旧回测兼容
-
----
-
-## 设计原则
-
-不修改：
-
-- engine_v4_2.py
-- portfolio.py
-- broker.py
-- risk模块
-
-仅增加适配层。
-
----
-
-## 下一步
-
-1. 编写 V5 Pipeline 回测测试
-2. 验证 signal → trader → engine 链路
-3. 运行首次 V5 回测
+将 Strategy Layer 正式接管组合选股逻辑。

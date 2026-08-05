@@ -5,6 +5,7 @@ import time
 from sqlalchemy import text
 
 from data.query import engine
+from strategy.strategy_pipeline import select_strategy_stocks
 
 
 
@@ -226,28 +227,11 @@ def select_stocks(
 
 
 
-    available=(
+    result = select_strategy_stocks(
 
-        available
+        available,
 
-        .sort_values(
-            "final_score",
-            ascending=False
-        )
-
-    )
-
-
-
-    result=(
-
-        available
-
-        .head(TOP_N)
-
-        ["code"]
-
-        .tolist()
+        TOP_N
 
     )
 

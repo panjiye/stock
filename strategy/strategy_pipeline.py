@@ -9,19 +9,54 @@ V5-dev
 2. 执行市场过滤
 3. 组合技术信号
 4. 输出标准策略信号
-
-设计原则:
-- 不修改已有策略组件
-- 不负责因子计算
-- 不负责回测执行
-- 作为 Factor Layer 与 Backtest 的桥梁
+5. 提供组合选股接口
 """
 
-from typing import Dict, Optional
+from typing import Dict, List
 
 from strategy.market_filter import check_market
 from strategy.ma_cross import check_ma_cross
 from strategy.macd import check_macd
+
+
+def select_strategy_stocks(factor_df, top_n: int = 50) -> List[str]:
+    """
+    根据 Factor Layer 输出选择组合股票。
+
+    输入:
+        factor_df:
+            包含 factor_score 字段的数据表
+            需要至少包含:
+            code
+            final_score
+
+    输出:
+        股票代码列表
+
+    设计原则:
+        Strategy Layer 负责选股规则。
+        不负责因子计算和交易执行。
+    """
+
+    if factor_df is None or len(factor_df) == 0:
+        return []
+
+    required = ["code", "final_score"]
+
+    for col in required:
+        if col not in factor_df.columns:
+            raise ValueError(f"missing column: {col}")
+
+    selected = (
+        factor_df
+        .sort_values(
+            "final_score",
+            ascending=False
+        )
+        .head(top_n)
+    )
+
+    return selected["code"].tolist()
 
 
 def build_strategy_signal(
@@ -30,16 +65,6 @@ def build_strategy_signal(
     price_df,
     require_market_filter: bool = True,
 ) -> Dict:
-    """
-    根据因子快照和技术数据生成策略信号。
-
-    返回:
-    {
-        code,
-        signal,
-        reason
-    }
-    """
 
     reasons = []
 
@@ -54,7 +79,6 @@ def build_strategy_signal(
 
     financial = factor_snapshot.get("financial", {})
     valuation = factor_snapshot.get("valuation", {})
-    technical = factor_snapshot.get("technical", {})
 
     total_score = factor_snapshot.get("total_score", 0)
 
@@ -74,10 +98,7 @@ def build_strategy_signal(
         reasons.append("MACD多头")
         technical_signal = True
 
-    if total_score >= 70 and technical_signal:
-        signal = "BUY"
-    else:
-        signal = "HOLD"
+    signal = "BUY" if total_score >= 70 and technical_signal else "HOLD"
 
     return {
         "code": code,
