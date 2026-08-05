@@ -1,12 +1,12 @@
-import sqlite3
 from datetime import datetime
 
+import pandas as pd
 import tushare as ts
 
 from config.tushare_config import TUSHARE_TOKEN
 
+from data.writer import upsert_dataframe
 
-DB_PATH = "database/stock.db"
 
 
 def get_engine():
@@ -14,6 +14,7 @@ def get_engine():
     return ts.pro_api(
         TUSHARE_TOKEN
     )
+
 
 
 def download_industry():
@@ -47,75 +48,57 @@ def download_industry():
     )
 
 
-    conn = sqlite3.connect(
-        DB_PATH
-    )
-
-    cur = conn.cursor()
-
-
     update_date = datetime.now().strftime(
         "%Y-%m-%d"
     )
 
 
-    count = 0
+    df = df.rename(
+        columns={
+            "symbol": "code"
+        }
+    )
 
 
-    for _, row in df.iterrows():
-
-        code = row["symbol"]
-
-        name = row["name"]
-
-        industry = row["industry"]
+    df["industry"] = (
+        df["industry"]
+        .fillna("")
+    )
 
 
-        if industry is None:
-            industry = ""
+    df["source"] = "tushare"
+
+    df["update_date"] = update_date
 
 
-        cur.execute(
-            """
-            INSERT OR REPLACE INTO stock_industry
-            (
-                code,
-                name,
-                industry,
-                source,
-                update_date
-            )
-            VALUES
-            (
-                ?,
-                ?,
-                ?,
-                ?,
-                ?
-            )
-            """,
-            (
-                code,
-                name,
-                industry,
-                "tushare",
-                update_date
-            )
-        )
-
-        count += 1
+    df = df[
+        [
+            "code",
+            "name",
+            "industry",
+            "source",
+            "update_date"
+        ]
+    ]
 
 
-
-    conn.commit()
-    conn.close()
+    count = upsert_dataframe(
+        df,
+        "stock_industry",
+        [
+            "code"
+        ]
+    )
 
 
     print()
+
     print("=" * 60)
+
     print(
         f"写入完成: {count}"
     )
+
     print("=" * 60)
 
 

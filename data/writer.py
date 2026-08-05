@@ -3,7 +3,6 @@ from sqlalchemy import text
 
 from data.query import engine
 
-
 def insert_dataframe(
     df,
     table,
@@ -68,3 +67,135 @@ def get_connection():
     """
 
     return engine.connect()
+
+def insert_ignore(
+    df,
+    table
+):
+    """
+    DataFrame 忽略重复键写入
+    """
+
+    if df is None:
+        return 0
+
+
+    if df.empty:
+        return 0
+
+
+    columns = list(df.columns)
+
+    cols = ",".join(columns)
+
+    placeholders = ",".join(
+        [
+            f":{c}"
+            for c in columns
+        ]
+    )
+
+
+    sql = text(
+        f"""
+        INSERT OR IGNORE INTO {table}
+        (
+            {cols}
+        )
+        VALUES
+        (
+            {placeholders}
+        )
+        """
+    )
+
+
+    records = df.to_dict(
+        orient="records"
+    )
+
+
+    with engine.begin() as conn:
+
+        result = conn.execute(
+            sql,
+            records
+        )
+
+
+    return result.rowcount
+
+def upsert_dataframe(
+    df,
+    table,
+    unique_columns
+):
+    """
+    DataFrame 插入或更新
+
+    sqlite INSERT OR REPLACE 替代方案
+    """
+
+    if df is None:
+        return 0
+
+    if df.empty:
+        return 0
+
+
+    columns = list(df.columns)
+
+
+    placeholders = ",".join(
+        [f":{c}" for c in columns]
+    )
+
+
+    column_sql = ",".join(
+        columns
+    )
+
+
+    update_columns = [
+        c for c in columns
+        if c not in unique_columns
+    ]
+
+
+    update_sql = ",".join(
+        [
+            f"{c}=excluded.{c}"
+            for c in update_columns
+        ]
+    )
+
+
+    sql = f"""
+    INSERT INTO {table}
+    (
+        {column_sql}
+    )
+    VALUES
+    (
+        {placeholders}
+    )
+    ON CONFLICT
+    (
+        {",".join(unique_columns)}
+    )
+    DO UPDATE SET
+    {update_sql}
+    """
+
+
+    with engine.begin() as conn:
+
+        conn.execute(
+            text(sql),
+            df.to_dict(
+                orient="records"
+            )
+        )
+
+
+    return len(df)
