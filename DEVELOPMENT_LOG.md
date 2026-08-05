@@ -32,3 +32,37 @@ factor_score → strategy_pipeline.select_strategy_stocks() → backtest
 下一阶段：
 
 V5 End-to-End Pipeline Validation。
+
+## V5 Baseline Backtest Completed
+
+日期：
+
+2026-08
+
+完成内容：
+
+1. 完成 Factor Layer 到 Backtest 全链路验证。
+
+2. 完成第一次长期历史回测。
+
+3. 建立 V5 Baseline v1。
+
+
+主要结果：
+
+最终资产:
+15,389,833.64
+
+年化收益:
+14.07%
+
+最大回撤:
+-49.45%
+
+Sharpe:
+0.7066
+
+
+下一阶段：
+
+Risk Layer Enhancement。

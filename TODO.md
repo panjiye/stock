@@ -19,3 +19,24 @@
 - 因子优化
 - 策略优化
 - 风控优化
+
+# 已完成
+
+- [x] Factor Layer
+- [x] Strategy Layer
+- [x] Strategy Backtest Bridge
+- [x] V5 Baseline Backtest
+
+
+# 当前任务
+
+- [ ] 优化 Risk Layer
+- [ ] 降低最大回撤
+- [ ] 增加 Benchmark 对比
+- [ ] 分析回撤贡献
+
+
+# 后续
+
+- [ ] 因子权重优化
+- [ ] 实盘扫描流程

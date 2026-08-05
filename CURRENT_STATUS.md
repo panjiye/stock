@@ -25,3 +25,22 @@ performance
 ## 下一步
 
 完成V5 Pipeline Validation，运行第一次完整回测。
+
+
+## V5 Baseline Backtest Completed
+
+状态：
+
+已完成第一次完整回测闭环。
+
+结果：
+
+- 初始资金: 1,000,000
+- 最终资产: 15,389,833.64
+- 年化收益: 14.07%
+- 最大回撤: -49.45%
+- Sharpe: 0.7066
+
+当前阶段：
+
+进入 Risk Layer Enhancement。
