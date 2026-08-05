@@ -1,9 +1,7 @@
-import sqlite3
 import pandas as pd
 import numpy as np
+from data.query import engine
 
-
-DB_PATH = "database/stock.db"
 
 
 EQUITY_FILE = "results/equity.csv"
@@ -163,9 +161,7 @@ def load_index(
 ):
 
 
-    conn = sqlite3.connect(
-        DB_PATH
-    )
+    conn = engine.connect()
 
 
     sql = """
