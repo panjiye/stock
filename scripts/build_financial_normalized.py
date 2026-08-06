@@ -4,6 +4,7 @@ from sqlalchemy import text
 
 
 from data.query import engine
+from data.writer import insert_dataframe
 
 from analysis.financial_normalize import (
     normalize_financial_profit
@@ -74,11 +75,10 @@ def save_normalized(df):
 
 
 
-    df.to_sql(
+    insert_dataframe(
+        df,
         "financial_profit_normalized",
-        engine,
-        if_exists="append",
-        index=False
+        if_exists="append"
     )
 
 
