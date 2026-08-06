@@ -3,6 +3,7 @@ import pandas as pd
 from sqlalchemy import text
 
 from data.query import engine
+from data.writer import insert_dataframe
 
 from analysis.financial_factor import (
     calculate_financial_factor
@@ -73,15 +74,13 @@ def save_factor(df):
         )
 
 
-    df.to_sql(
+    insert_dataframe(
+
+        df,
 
         "financial_factor",
 
-        engine,
-
-        if_exists="append",
-
-        index=False
+        if_exists="append"
 
     )
 
