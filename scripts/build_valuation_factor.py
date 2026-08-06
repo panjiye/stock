@@ -4,6 +4,7 @@ import numpy as np
 from sqlalchemy import text
 
 from data.query import engine
+from data.writer import insert_dataframe
 
 
 
@@ -150,11 +151,10 @@ def save(df):
         )
 
 
-    df.to_sql(
+    insert_dataframe(
+        df,
         "valuation_factor",
-        engine,
-        if_exists="append",
-        index=False
+        if_exists="append"
     )
 
 
