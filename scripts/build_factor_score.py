@@ -4,6 +4,7 @@ import time
 from sqlalchemy import text
 
 from data.query import engine
+from data.writer import insert_dataframe
 
 
 
@@ -335,15 +336,13 @@ def save(df):
 
 
 
-    df.to_sql(
+    insert_dataframe(
+
+        df,
 
         "factor_score",
 
-        engine,
-
-        if_exists="append",
-
-        index=False
+        if_exists="append"
 
     )
 
