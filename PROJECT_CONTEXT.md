@@ -24,6 +24,7 @@
 - Factor Layer
 - Strategy Pipeline
 - Backtest Integration
+- 项目结构整理：当前 V5 主线、历史资产与临时产物已分离
 
 ## 当前重点
 
@@ -36,11 +37,9 @@ Risk Layer建设：
 
 ## 财务数据说明
 
-旧：
+旧财务下载脚本已归档：
 
-scripts/download_profit_all.py
-
-状态：废弃，仅历史参考。
+archive/scripts/legacy/download_profit_all.py
 
 当前入口：
 
@@ -57,3 +56,9 @@ EastMoney → financial_*表 → Factor Layer
 - 不修改数据库设计
 - 不影响archive历史代码
 - 修改后同步文档
+
+## 目录约定
+
+- 当前可运行代码保留在 `analysis/`、`data/`、`strategy/`、`backtest/`、`scripts/`。
+- 历史代码、回测结果和旧文档统一放在 `archive/`，不作为当前入口修改。
+- V5 目标结果结构为 `results/v5/<版本>/`；当前冻结基准位于 `results/v5/baseline/`。现有回测脚本仍会写入根目录，后续应在标准化输出任务中迁移，清理阶段不改动其代码。
