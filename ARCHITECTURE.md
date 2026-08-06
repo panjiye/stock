@@ -1,167 +1,47 @@
 # Architecture
 
-更新时间：2026-08-05
+更新时间：2026-08-06
 
-
-# V5 架构目标
-
-建立统一的数据采集、存储、分析架构。
-
-
-核心原则：
-
-所有数据写入必须经过 Writer Layer。
-
-
----
-
-
-# 当前架构
-
-
-## 数据来源层
-
-
-来源：
-
-- AkShare
-- Tushare
-- BaoStock
-
-
-负责：
-
-获取原始数据。
-
-
----
-
-
-## 数据处理层
-
-
-负责：
-
-- 数据清洗
-- 类型转换
-- 字段标准化
-
-
----
-
-
-## Writer Layer（新增核心）
-
-
-位置：
-
-data/writer.py
-
-
-职责：
-
-统一数据库写入。
-
-
-提供：
-
-- insert_dataframe
-
-批量 DataFrame 写入
-
-
-- insert_ignore
-
-替代：
-
-INSERT OR IGNORE
-
-
-- insert_replace
-
-替代：
-
-INSERT OR REPLACE
-
-
-- execute_sql
-
-执行复杂 SQL
-
-
----
-
-
-# 重构前
-
-
-脚本：
-
-download_xxx.py
-
-
-直接：
-
-sqlite3.connect
-
-cursor.execute
-
-commit
-
-
-问题：
-
-- 重复代码大量存在
-- 数据库逻辑分散
-- 难维护
-
-
----
-
-
-# 重构后
-
-
-脚本：
-
-download_xxx_v5.py
-
-
-流程：
-
+## V5架构
 
 数据源
-
 ↓
-
-DataFrame
-
+数据处理
 ↓
-
-Writer
-
+Writer/Query Layer
 ↓
+Factor Layer
+↓
+Strategy Layer
+↓
+Backtest
+↓
+Risk Layer
+↓
+Portfolio
 
-Database
+## 核心规则
 
+所有数据库写入必须经过：
 
+data.writer
 
----
+所有查询必须经过：
 
+data.query
 
-# 当前影响
+禁止：
 
+- sqlite3直接写入
+- 分散数据库逻辑
+- 推翻V5结构
 
-已完成迁移：
+## 模块职责
 
-- index
-- industry
-- dividend
+Factor Layer：因子计算
 
+Strategy Layer：信号组合
 
-待迁移：
+Backtest：执行验证
 
-- profit
-- daily
-- financial
-
+Risk Layer：风险分析

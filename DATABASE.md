@@ -1,124 +1,45 @@
 # Database
 
-更新时间：2026-08-05
-
+更新时间：2026-08-06
 
 数据库：
-
 database/stock.db
 
+类型：SQLite
 
-当前数据库类型：
-
-SQLite
-
-
-访问方式：
-
-SQLAlchemy engine
-
-
----
-
-
-# 写入规范
-
-
-从 v5 开始：
-
-
-禁止：
-
-sqlite3.connect()
-
-cursor.execute()
-
-直接 INSERT
-
+## 数据访问规范
 
 统一：
 
 data.writer
+data.query
 
+禁止：
 
----
+sqlite3.connect()
+cursor.execute()
+直接INSERT
 
+## 财务数据
 
-# 已确认表
+### financial_profit
 
+状态：历史兼容表。
 
-## dividend
+来源：旧profit下载流程。
 
+当前不作为新开发入口。
 
-字段：
+### 当前财务入口
 
-- code
-- regist_date
-- declare_date
-- pay_date
-- ex_date
-- cash_before_tax
-- cash_after_tax
-- bonus_share
-- transfer_share
-- dividend_info
+scripts/download_financial_all_v5.py
 
+流程：
 
-唯一索引：
+EastMoney
+↓
+financial_*表
+↓
+Factor Layer
 
-idx_dividend_unique
-
-(code, ex_date)
-
-
----
-
-
-## download_log
-
-
-字段：
-
-- code
-- data_type
-- status
-- message
-- update_time
-
-
-作用：
-
-记录下载状态。
-
-
----
-
-
-## financial_profit
-
-
-状态：
-
-正在迁移。
-
-
----
-
-
-# 数据写入策略
-
-
-行情类：
-
-insert_ignore
-
-
-财务类：
-
-insert_ignore
-
-
-状态日志：
-
-insert_replace
-
+新增财务因子优先使用新版financial数据。
