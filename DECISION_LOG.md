@@ -1,5 +1,15 @@
 # 设计决策记录
 
+## 2026-08-06：买入/卖出价改按最近交易日匹配
+
+**决策**：新增 `get_nearest_price()`（批量）与 `get_nearest_trade_price()`（单股票）函数，买入 `get_open_price()` 与卖出 `get_close_price()` 统一改为「target_date 当日或之前最近一个交易日」从 `daily_price_qfq` 取价，取代原先的精确日期匹配。
+
+**依据**：coverage.csv 揭示 85 个理论季度中有 28 期因卖出日（季度末)是非交易日、精确日期查询落空而被整期跳过（EMPTY_CLOSE），导致回测时间轴非连续。真实交易中，非交易日顺延至最近交易日成交是常规做法，属数据口径的合理修复。
+
+**边界**：仅修复交易日期匹配，不改 `factor_score`、`technical_factor`、`strategy_pipeline`，不改数据库，不改收益/权重计算逻辑。
+
+**影响**：EMPTY_CLOSE 由 28 → 0；实际调仓期 56 → 84；equity 季度时间轴恢复连续（90~92 天均匀间隔）。最终资产由 15,389,833.64 → 17,785,136.46，反映纳入完整季度后的口径。coverage.csv 仍保留边界期 EMPTY_STOCKS（回测起点无因子），继续作为数据缺口监控依据。
+
 ## 2026-08-06：缺失季度显式记录，禁止静默跳过
 
 **决策**：在 `run_backtest` 中对所有理论季度调仓期一律生成 coverage 记录，连续输出 `coverage.csv`（字段：rebalance_date、has_factor_score、stock_count、status、actual_rebalance），并显式打印跳过原因。

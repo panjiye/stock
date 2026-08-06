@@ -321,7 +321,81 @@ def get_next_trade_day(date):
 
 
 # ============================================================
-# 获取买入价格
+# 获取最近交易日价格（当日或之前最近一个交易日）
+# ============================================================
+
+
+def get_nearest_price(stocks, target_date):
+    """
+    批量获取 target_date 当日或之前最近一个交易日的价格。
+
+    用于处理季度调仓日 / 卖出日不是交易日的场景，
+    避免精确日期匹配导致整期数据缺失（EMPTY_CLOSE）。
+    """
+    if len(stocks) == 0:
+        return pd.DataFrame()
+
+    if not isinstance(target_date, pd.Timestamp):
+        target_date = pd.to_datetime(target_date)
+
+    placeholders = ",".join([f":c{i}" for i in range(len(stocks))])
+    t = target_date.strftime("%Y-%m-%d")
+
+    sql = f"""
+    SELECT p.code, p.date, p.open, p.close
+    FROM daily_price_qfq p
+    INNER JOIN
+    (
+        SELECT code, MAX(date) AS nearest_date
+        FROM daily_price_qfq
+        WHERE code IN ({placeholders}) AND date <= :t
+        GROUP BY code
+    ) m
+        ON p.code = m.code AND p.date = m.nearest_date
+    WHERE p.code IN ({placeholders}) AND p.date <= :t
+    """
+
+    params = {f"c{i}": c for i, c in enumerate(stocks)}
+    params["t"] = t
+
+    with engine.connect() as conn:
+        df = pd.read_sql(text(sql), conn, params=params)
+
+    df["date"] = pd.to_datetime(df["date"])
+
+    return df
+
+
+def get_nearest_trade_price(stock_code, target_date):
+    """
+    获取单只股票 target_date 当日或之前最近一个交易日的价格。
+
+    返回行包含 code / date / open / close，
+    若不存在任何可交易价格则返回空 DataFrame。
+    """
+    t = pd.to_datetime(target_date).strftime("%Y-%m-%d")
+
+    sql = text(
+        """
+        SELECT code, date, open, close
+        FROM daily_price_qfq
+        WHERE code = :c AND date <= :d
+        ORDER BY date DESC
+        LIMIT 1
+        """
+    )
+
+    with engine.connect() as conn:
+        df = pd.read_sql(sql, conn, params={"c": stock_code, "d": t})
+
+    if not df.empty:
+        df["date"] = pd.to_datetime(df["date"])
+
+    return df
+
+
+# ============================================================
+# 获取买入价格（当日或之前最近交易日）
 # ============================================================
 
 
@@ -336,65 +410,17 @@ def get_open_price(
         return pd.DataFrame()
 
 
-
-    placeholders=",".join(
-
-        ["?"]*len(stocks)
-
+    nearest = get_nearest_price(
+        stocks,
+        date
     )
 
+    if nearest.empty:
+
+        return pd.DataFrame()
 
 
-    sql=f"""
-
-    SELECT
-
-        code,
-
-        open
-
-
-    FROM daily_price_qfq
-
-
-    WHERE
-
-        date=?
-
-
-    AND
-
-        code IN ({placeholders})
-
-
-    """
-
-
-
-    params=[
-
-        date.strftime("%Y-%m-%d")
-
-    ]
-
-
-    params.extend(stocks)
-
-
-
-    with engine.connect() as conn:
-
-        df=pd.read_sql(
-
-            sql,
-
-            conn,
-
-            params=tuple(params)
-
-        )
-
-
+    df = nearest[["code", "open"]].copy()
 
     df=df[
 
@@ -423,63 +449,17 @@ def get_close_price(
         return pd.DataFrame()
 
 
-
-    placeholders=",".join(
-
-        ["?"]*len(stocks)
-
+    nearest = get_nearest_price(
+        stocks,
+        date
     )
 
+    if nearest.empty:
 
-    sql=f"""
-
-    SELECT
-
-        code,
-
-        close
+        return pd.DataFrame()
 
 
-    FROM daily_price_qfq
-
-
-    WHERE
-
-        date=?
-
-
-    AND
-
-        code IN ({placeholders})
-
-
-    """
-
-
-
-    params=[
-
-        date.strftime("%Y-%m-%d")
-
-    ]
-
-
-    params.extend(stocks)
-
-
-
-    with engine.connect() as conn:
-
-        df=pd.read_sql(
-
-            sql,
-
-            conn,
-
-            params=tuple(params)
-
-        )
-
+    df = nearest[["code", "close"]].copy()
 
     df=df[
 
@@ -1361,7 +1341,7 @@ def build_baseline_outputs(
         "## Known Limitations",
         "- 本基线为可运行的首版交付物，未经完整实证校验。",
         "- 技术因子未来函数未修复：historical point 可能使用全序列分位，存在未来数据污染风险。",
-        "- 卖出价采用季度末当日精确匹配 daily_price_qfq；当季度末日为非交易日时该期被跳过（大量 EMPTY_CLOSE），导致回测时间轴非连续。",
+        "- 卖出价/买入价已改为「target_date 当日或之前最近交易日」匹配 daily_price_qfq，EMPTY_CLOSE 导致的非连续时间轴已修复；coverage.csv 中仅剩边界期 EMPTY_STOCKS（回测起点无可用因子）。",
         "- 采用等权组合，未计入手续费、滑点、涨跌停、停牌等真实交易约束。",
         "- 大量缺失季度通过 coverage.csv 显式记录，不再静默跳过。",
         "- holdings / rebalance 为最小化记录，供下游分析使用。",

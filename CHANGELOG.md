@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## 2026-08-06：V5.0 Beta 交易日期匹配修复
+
+### 变更
+
+- 新增 `get_nearest_price()`（批量）与 `get_nearest_trade_price()`（单股票）价格获取函数，统一按「target_date 当日或之前最近一个交易日」从 daily_price_qfq 取价。
+- 将买入 `get_open_price()` 与卖出 `get_close_price()` 由精确日期匹配改为最近的交易日匹配，修复季度末非交易日导致整期被跳过的问题。
+- REPORT.md 已知限制更新为"交易日期匹配已修复"。
+
+### 影响
+
+- EMPTY_CLOSE：28 → 0。
+- 实际调仓期：56 → 84（仅剩边界期 EMPTY_STOCKS）。
+- equity 季度时间轴恢复连续（90~92 天均匀间隔，无缺口）。
+- 最终资产由 15,389,833.64 → 17,785,136.46（因纳入更多完整季度）。
+- `pytest` 2 passed；未修改 factor_score、technical_factor、strategy_pipeline，未改数据库。
+
 ## 2026-08-06：V5.0 Beta 基线可信化
 
 ### 变更

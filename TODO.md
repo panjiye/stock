@@ -19,6 +19,8 @@
 - [x] V5.0 Beta 基线可信化：新增 coverage.csv，完整记录所有理论季度调仓（禁止静默跳过）。
 - [x] V5.0 Beta 基线可信化：完善 params.json（回测截止日、调仓周期、手续费、滑点、因子版本、数据库版本、git commit）。
 - [x] V5.0 Beta 基线可信化：升级 REPORT.md（数据覆盖说明、已知限制扩充、流程验证声明）。
+- [x] 交易日匹配修复：新增 `get_nearest_price()`/`get_nearest_trade_price()`，按「当日或之前最近交易日」取买/卖价；EMPTY_CLOSE 由 28 → 0，回测期 56 → 84，equity 时间轴连续。
+
 
 ## V5.0 Beta 基线任务
 

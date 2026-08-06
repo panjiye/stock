@@ -26,13 +26,20 @@
 - 升级 [REPORT.md](results/v5/v5.0_baseline/REPORT.md)，新增数据覆盖说明、扩充已知限制，并明确"当前回测结果仅用于流程验证，不构成策略有效性结论"。
 - 运行校验：`pytest` 2 passed；完整 baseline 重新运行成功，资产仍为 15,389,833.64、56 笔交易，验证策略逻辑未改变。
 
-### 当前已验证结果
-- 回测最终资产：15,389,833.64
-- 总收益：1438.98%
-- 年化收益：14.07%
-- 最大回撤：-49.45%
-- Sharpe：0.7066
-- 数据覆盖：85 个理论季度调仓期，56 期实际调仓（OK），29 期跳过（28 期 EMPTY_CLOSE、1 期 EMPTY_STOCKS）。
+### 已完成的交易日匹配修复（本轮）
+
+针对 coverage.csv 揭示的 28 期 EMPTY_CLOSE 根因（卖出日/调仓日非交易日时精确日期匹配 daily_price_qfq 落空），在不改因子/策略/数据库的前提下修复价格获取逻辑：
+- 新增 `get_nearest_price()`（批量）与 `get_nearest_trade_price()`（单股票）函数，统一按「target_date 当日或之前最近一个交易日」取价。
+- 替换原买入 `get_open_price()` 与卖出 `get_close_price()` 的精确日期查询，复用最近交易日逻辑。
+- 效果：EMPTY_CLOSE 由 28 → **0**；回测期由 56 → 84；equity 季度时间轴恢复连续（90~92 天均匀间隔，无缺口）。仅剩边界期 EMPTY_STOCKS（回测起点 2005-03-31 无可用因子）。
+
+### 当前已验证结果（修复后）
+- 回测最终资产：17,785,136.46
+- 总收益：1678.51%
+- 年化收益：14.87%
+- 最大回撤：-61.04%
+- Sharpe：0.5343
+- 数据覆盖：85 个理论季度调仓期，84 期实际调仓（OK），1 期跳过（EMPTY_STOCKS，回测起点边界）。
 
 ### 1. 固化 V5.0 链路
 
@@ -190,10 +197,10 @@ daily data → financial factor → valuation factor → technical factor → te
 - 失效的 V4.1/V4.2 engine、报告和归因入口已归档；如需复用，必须先以归档代码为参考建立新的 V5 实现。
 - `scripts/backtest_factor.py` 已接入标准结果目录 [results/v5/v5.0_baseline](results/v5/v5.0_baseline)；参数快照、持仓/调仓记录与统一报告已补齐，并新增 coverage.csv 逐期数据覆盖记录。
 
-### P1：回测时间轴连续性（coverage.csv 揭示）
+### P1：回测时间轴连续性（已修复）
 
-- 85 个理论季度调仓期中，28 期因"卖出价采用季度末当日精确匹配 daily_price_qfq、当季度末日为非交易日"被整体跳过（EMPTY_CLOSE），另有 1 期因初始无因子（EMPTY_STOCKS）。
-- 该问题导致回测时间轴非连续，当前只需在 V5.1 中修复"卖出日取该日前最近交易日"逻辑。相关缺口已通过 coverage.csv 显式、可见地记录，不再静默跳过。
+- 已修复：`get_nearest_price()` / `get_nearest_trade_price()` 按「target_date 当日或之前最近交易日」匹配，EMPTY_CLOSE 由 28 → 0，回测期由 56 → 84，equity 时间轴恢复连续。
+- 当前仅剩边界期 EMPTY_STOCKS（回测起点 2005-03-31 无可用因子），属正常边界情形，非交易日匹配问题。
 
 ### P1：数据与 schema 一致性
 
