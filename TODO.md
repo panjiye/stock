@@ -1,7 +1,11 @@
 # TODO
 
 更新时间：2026-08-06
-版本：V5-dev
+版本：V5.0-beta
+
+## 当前优先级
+
+当前阶段的目标是先完成一个可运行、可测试、可比较的 V5.0 Beta 基线，而不是先做 V5.1 技术因子重构。
 
 ## 已完成
 
@@ -12,43 +16,52 @@
 - [x] Factor Backtest 接入 `select_strategy_stocks()`。
 - [x] 历史回撤、行业、个股贡献及风险覆盖研究资产归档。
 - [x] 清理空占位、缓存、扫描日志和重复 V4.1 结果副本。
+- [x] V5.0 Beta 基线可信化：新增 coverage.csv，完整记录所有理论季度调仓（禁止静默跳过）。
+- [x] V5.0 Beta 基线可信化：完善 params.json（回测截止日、调仓周期、手续费、滑点、因子版本、数据库版本、git commit）。
+- [x] V5.0 Beta 基线可信化：升级 REPORT.md（数据覆盖说明、已知限制扩充、流程验证声明）。
 
-## P0：可信基线与数据正确性
+## V5.0 Beta 基线任务
 
-- [ ] 修复技术动量评分的时点可得性，禁止历史排名使用未来收益数据。
-- [ ] 重建并核验 `technical_factor`、`technical_quarter_factor`、`factor_score`。
-- [ ] 复跑 V5 因子基准回测，固定数据截止日、参数和因子版本。
-- [ ] 核对 EastMoney 财报字段映射，确认 `np_margin`、`gp_margin` 的来源语义。
-- [ ] 建立派生表刷新顺序：原始数据 → 标准化财报 → 因子 → 股票池 → 回测。
+### 1. 固化主链路
 
-## P1：统一 V5 回测与 Risk Layer 输入
+- [x] 确认 daily_price_qfq → financial_factor → valuation_factor → technical_factor → technical_quarter_factor → factor_score → strategy_pipeline → backtest_factor → results 的完整执行链路。
+- [x] 处理当前阻塞运行的导入、路径、数据接口和脚本入口问题。
+- [x] 确保脚本可直接运行并产出基础结果。
 
-- [ ] 定义唯一的 V5 回测入口和结果目录。
-- [ ] 将 `scripts/backtest_factor.py` 的根目录输出迁移至版本化结果目录。
-- [ ] 标准化输出 equity、trades、持仓/调仓记录、回测参数和数据截止日。
-- [ ] 基于归档研究逻辑新建 V5 风险分析接口，不复用旧的硬编码路径。
-- [ ] 输出最大回撤周期及同期基准表现。
-- [ ] 输出个股回撤贡献、行业回撤贡献。
-- [ ] 输出沪深 300 等 Benchmark 的收益、超额、Alpha、Beta 比较。
+### 2. 生成标准结果输出
 
-## P2：策略和风控正式接入
+- [x] 在 results/v5/v5.0_baseline/ 下生成 equity.csv、trades.csv、holdings.csv、rebalance_records.csv。
+- [x] 生成 coverage.csv，记录所有理论季度调仓的因子有无、股票数量、是否调仓及跳过原因，禁止静默跳过。
+- [x] 生成 params.json、REPORT.md、charts/ 可视化输出。
+- [x] 输出基础风险分析指标：CAGR、Sharpe、最大回撤、最大回撤周期、胜率、盈亏比、年度收益、月度收益。
+- [x] 记录数据快照信息、git commit 信息和当前已知限制。
 
-- [ ] 明确并接入市场过滤规则。
-- [ ] 明确并接入 MA/MACD 技术确认规则，避免仅保留未使用接口。
-- [ ] 将个股退出规则纳入统一回测并记录退出原因。
-- [ ] 接入市场仓位控制与风险覆盖，并与可信基线比较收益、回撤和 Sharpe。
-- [ ] 按需从 `archive/backtest/` 提取经过验证的规则，接入 V5 主线。
+### 3. 形成统一运行入口
 
-## P3：数据层迁移收尾
+- [x] 确认 python -m scripts.backtest_factor 或 python -m scripts.run_v5_baseline 的可用性。
+- [x] 让同一命令可重复生成 V5.0 Baseline。
 
-- [ ] 将仍直接写库的活动脚本逐步迁移到 `data.writer`。
-- [ ] 整理数据库 schema 迁移规范，禁止直接用早期建表脚本重建主库。
-- [ ] 为下载、因子构建和回测关键入口补充最小可重复验证。
+### 4. 展示层 Dashboard
 
-## 后续：Portfolio Layer 与实盘准备
+- [x] 生成浏览器可打开的仪表盘页面 [results/v5/v5.0_baseline/dashboard/index.html](results/v5/v5.0_baseline/dashboard/index.html)。
+- [x] 将性能摘要、参数和结果文件入口集成到仪表盘中。
 
-- [ ] 仓位优化。
-- [ ] 风险预算。
-- [ ] 多策略组合。
-- [ ] 信号标准化输出。
-- [ ] 交易接口与实时风险控制准备。
+## 当前禁止项
+
+- [ ] 不重构 technical.py。
+- [ ] 不新增 v51 表。
+- [ ] 不大规模拆分 analysis 模块。
+- [ ] 不修改核心因子逻辑。
+- [ ] 不优化未来函数问题。
+- [ ] 不重设计数据库结构。
+
+## 暂缓/延期
+
+- [ ] V5.1：技术因子未来函数修复。
+- [ ] V5.2：策略层完善。
+- [ ] V5.3：风险层。
+- [ ] V5.4：组合优化。
+
+## 说明
+
+在 V5.0 Baseline 未完成之前，不再推进 V5.1 的大规模因子重构和模块拆分。

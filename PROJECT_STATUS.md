@@ -1,11 +1,132 @@
 # 项目状态
 
 更新时间：2026-08-06
-版本：V5-dev
+版本：V5.0-beta
 
 ## 当前定位
 
-项目处于“V5 因子—策略—回测基础链路完成，进入基线可信化与 Risk Layer 建设”的阶段。当前主要用途是 A 股多因子研究和历史回测，不是实盘交易系统。
+项目当前优先级调整为“先完成 V5.0 Beta 基线，再进入 V5.1 技术因子修复、V5.2 策略完善、V5.3 风险层和 V5.4 组合优化”。当前目标不是追求完美架构，而是形成一个可运行、可测试、可比较的完整闭环。
+
+## 当前阶段目标
+
+### 已完成的第一轮 V5.0 Beta 基线
+
+已完成以下落地工作：
+- 以 [scripts/backtest_factor.py](scripts/backtest_factor.py) 为当前主回测入口，已成功产出标准结果目录 [results/v5/v5.0_baseline](results/v5/v5.0_baseline)。
+- 已补齐回测输出文件：equity.csv、trades.csv、holdings.csv、rebalance_records.csv、params.json、REPORT.md 和 charts/。
+- 已生成资金曲线、回撤曲线、年度收益、月收益热力图和换手率图。
+- 已增加统一入口 [scripts/run_v5_baseline.py](scripts/run_v5_baseline.py)。
+- 已补充最小 Web Dashboard 页面 [results/v5/v5.0_baseline/dashboard/index.html](results/v5/v5.0_baseline/dashboard/index.html)，可直接在浏览器中打开查看基线摘要和结果文件入口。
+
+### 已完成的 V5.0 Beta 可信化阶段
+
+在不修改技术因子逻辑、不重构架构、不修改数据库的前提下，对齐基线"可复现声明"与"数据缺口透明化"：
+- 新增 [coverage.csv](results/v5/v5.0_baseline/coverage.csv)，完整记录全部 85 个理论季度调仓期（有无 factor_score、股票数量、是否实际调仓、跳过原因），**不再静默跳过**缺失季度。
+- 完善 [params.json](results/v5/v5.0_baseline/params.json)，补齐回测截止日、调仓周期、手续费率、滑点、因子版本、数据库版本与 git commit。
+- 升级 [REPORT.md](results/v5/v5.0_baseline/REPORT.md)，新增数据覆盖说明、扩充已知限制，并明确"当前回测结果仅用于流程验证，不构成策略有效性结论"。
+- 运行校验：`pytest` 2 passed；完整 baseline 重新运行成功，资产仍为 15,389,833.64、56 笔交易，验证策略逻辑未改变。
+
+### 当前已验证结果
+- 回测最终资产：15,389,833.64
+- 总收益：1438.98%
+- 年化收益：14.07%
+- 最大回撤：-49.45%
+- Sharpe：0.7066
+- 数据覆盖：85 个理论季度调仓期，56 期实际调仓（OK），29 期跳过（28 期 EMPTY_CLOSE、1 期 EMPTY_STOCKS）。
+
+### 1. 固化 V5.0 链路
+
+确认并跑通以下链路：
+
+daily data → financial factor → valuation factor → technical factor → technical_quarter_factor → factor score → strategy pipeline → backtest_factor → results
+
+### 2. 修复运行问题
+
+仅处理以下问题：
+
+- 导入错误
+- 路径错误
+- 数据接口错误
+- 脚本无法运行的问题
+
+不提前优化设计，不重构核心因子计算逻辑，不修改数据库结构。
+
+### 3. 生成第一个 V5.0 Baseline
+
+目标输出目录为 results/v5/v5.0_baseline/，交付内容不仅是基础结果文件，而是一个完整可分析的量化研究基线，包含：
+
+#### 3.1 回测核心结果
+
+- equity.csv
+- trades.csv
+- holdings.csv
+- rebalance_records.csv
+- coverage.csv（逐期记录所有理论季度调仓：因子有无、股票数量、是否调仓、跳过原因）
+
+用于后续复盘和二次分析。
+
+#### 3.2 回测参数与环境记录
+
+- params.json
+  - 初始资金
+  - 调仓周期
+  - 股票数量 TOPN
+  - 手续费
+  - 滑点
+  - 回测起止日期
+  - 因子版本
+  - 数据库版本
+  - git commit
+
+#### 3.3 研究报告
+
+- REPORT.md
+  - 策略说明
+  - 因子说明
+  - 回测周期
+  - 收益指标
+  - 风险指标
+  - 当前已知限制
+
+#### 3.4 可视化输出
+
+- charts/
+  - equity_curve.png
+  - drawdown_curve.png
+  - annual_return.png
+  - monthly_return_heatmap.png
+  - turnover.png
+  - holdings_distribution.png（如当前数据支持）
+
+#### 3.5 基础风险分析输出
+
+- 基础指标包括：
+  - CAGR
+  - Sharpe
+  - 最大回撤
+  - 最大回撤周期
+  - 胜率
+  - 盈亏比
+  - 年度收益
+  - 月度收益
+
+目标是让别人拿到 results/v5/v5.0_baseline/ 时，不看代码也能理解策略表现。
+
+### 4. 形成可重复运行入口
+
+目标是提供一个统一入口，例如：
+
+- python -m scripts.backtest_factor
+- 或 python -m scripts.run_v5_baseline
+
+能够重新生成同样结果。
+
+## 当前不做
+
+- 暂停 V5.1 架构升级和技术因子重构。
+- 不新增 v51 数据表。
+- 不进行大规模模块拆分。
+- 不修改当前核心因子计算逻辑。
 
 ## 已完成模块
 
@@ -67,8 +188,12 @@
 
 - 当前可运行 V5 主线只使用 `select_strategy_stocks()` 的 TOP50 排序；市场过滤、MA/MACD 信号和策略适配器尚未接入基准回测。
 - 失效的 V4.1/V4.2 engine、报告和归因入口已归档；如需复用，必须先以归档代码为参考建立新的 V5 实现。
-- 已建立 `results/v5/baseline/` 作为冻结基准位置；`scripts/backtest_factor.py` 当前仍会在根目录生成输出，尚未接入该标准目录。
-- 参数快照、持仓/调仓记录与统一报告仍待补齐。
+- `scripts/backtest_factor.py` 已接入标准结果目录 [results/v5/v5.0_baseline](results/v5/v5.0_baseline)；参数快照、持仓/调仓记录与统一报告已补齐，并新增 coverage.csv 逐期数据覆盖记录。
+
+### P1：回测时间轴连续性（coverage.csv 揭示）
+
+- 85 个理论季度调仓期中，28 期因"卖出价采用季度末当日精确匹配 daily_price_qfq、当季度末日为非交易日"被整体跳过（EMPTY_CLOSE），另有 1 期因初始无因子（EMPTY_STOCKS）。
+- 该问题导致回测时间轴非连续，当前只需在 V5.1 中修复"卖出日取该日前最近交易日"逻辑。相关缺口已通过 coverage.csv 显式、可见地记录，不再静默跳过。
 
 ### P1：数据与 schema 一致性
 
